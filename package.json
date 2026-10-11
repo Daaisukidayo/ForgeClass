@@ -1,0 +1,78 @@
+{
+  "name": "forge.class",
+  "version": "1.0.0",
+  "description": "Adds classes for ForgeScript: fields, methods, constructors and inheritance.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "!dist/__tests__",
+    "!dist/@build"
+  ],
+  "scripts": {
+    "build": "rimraf dist && tsc -p tsconfig.build.json",
+    "test": "rimraf dist && tsc && node --test \"dist/__tests__/*.test.js\"",
+    "client": "rimraf dist && tsc && node dist/__tests__/client/client.js",
+    "smoke": "rimraf dist && tsc && node dist/__tests__/client/client.js smoke",
+    "eslint": "eslint ./src --fix",
+    "prettier": "prettier --write \"./src/**/*\"",
+    "lint": "eslint ./src && prettier --check \"./src/**/*\"",
+    "tidy": "npm run eslint && npm run prettier",
+    "docgen": "npm run tidy && rimraf dist && tsc && typedoc src/index.ts && node dist/@build/docgen",
+    "commit": "npm run docgen && node dist/@build/commit",
+    "prepublishOnly": "npm run lint && npm run build && node .github/scripts/checkpack.js",
+    "postpublish": "tsc"
+  },
+  "keywords": [
+    "forgescript",
+    "forge.class",
+    "discord",
+    "discord.js",
+    "class",
+    "classes",
+    "oop",
+    "inheritance",
+    "tryforge",
+    "bdfd",
+    "aoi.js",
+    "aoi",
+    "dbd",
+    "dbd.ts",
+    "dbd.js",
+    "bdscript"
+  ],
+  "license": "GPL-3.0-only",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "peerDependencies": {
+    "@tryforge/forgescript": ">=1.4.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@tryforge/forgescript": "^2.7.1",
+    "@types/node": "^26.6.2",
+    "@typescript-eslint/eslint-plugin": "^8.70.1",
+    "@typescript-eslint/parser": "^8.70.1",
+    "discord.js": "^14.27.0",
+    "eslint": "^10.11.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.12.0",
+    "prettier": "^3.9.9",
+    "rimraf": "^6.1.3",
+    "typedoc": "^0.28.20",
+    "typescript": "^6.0.3"
+  },
+  "author": {
+    "name": "Daaisukidayo",
+    "url": "https://github.com/Daaisukidayo/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Daaisukidayo/ForgeClass.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Daaisukidayo/ForgeClass/issues"
+  }
+}

@@ -1,0 +1,262 @@
+<!DOCTYPE html><html class="default" lang="en" data-base="./"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>forge.class</title><meta name="description" content="Documentation for forge.class"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script><script async src="assets/hierarchy.js" id="tsd-hierarchy-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container"><a href="index.html" class="title">forge.class</a>
+<div id="tsd-toolbar-links"></div><button id="tsd-search-trigger" class="tsd-widget" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-search"></use></svg></button><dialog id="tsd-search" aria-label="Search"><input role="combobox" id="tsd-search-input" aria-controls="tsd-search-results" aria-autocomplete="list" aria-expanded="true" autocapitalize="off" autocomplete="off" placeholder="Search the docs" maxLength="100"/>
+<ul role="listbox" id="tsd-search-results"></ul>
+<div id="tsd-search-status" aria-live="polite" aria-atomic="true">
+<div>Preparing search index...</div></div></dialog><a href="#" class="tsd-widget menu" id="tsd-toolbar-menu-trigger" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></header>
+<div class="container container-main">
+<div class="col-content">
+<div class="tsd-page-title">
+<h1>forge.class</h1></div>
+<div class="tsd-panel tsd-typography"><div align="center">
+<h1 id="forgeclass" class="tsd-anchor-link">ForgeClass<a href="#forgeclass" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h1>
+<p>Classes for ForgeScript: fields, methods, constructors and inheritance.</p>
+<p><a href="https://github.com/Daaisukidayo/ForgeClass/"><img src="https://img.shields.io/github/package-json/v/Daaisukidayo/ForgeClass/main?label=forge.class&color=5c16d4" alt="forge.class"></a>
+<a href="https://github.com/tryforge/ForgeScript/"><img src="https://img.shields.io/github/package-json/v/tryforge/ForgeScript/main?label=@tryforge/forgescript&color=5c16d4" alt="@tryforge/forgescript"></a>
+<a href="https://discord.gg/yFW5Ju6JP8"><img src="https://img.shields.io/discord/997899472610795580?logo=discord" alt="Discord"></a></p>
+</div>
+<hr>
+<h2 id="contents" class="tsd-anchor-link">Contents<a href="#contents" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<ol>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#quick-start">Quick start</a></li>
+<li><a href="#functions">Functions</a></li>
+<li><a href="#how-it-works">How it works</a></li>
+<li><a href="#private-members">Private members</a></li>
+<li><a href="#class-files">Class files</a></li>
+<li><a href="#keeping-instances">Keeping instances</a></li>
+</ol>
+<h3 align="center">Installation</h3><hr>
+<ol>
+<li>
+<p>Install the package.</p>
+<p><strong>From npm</strong> - the stable release:</p>
+<pre><code class="bash"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">i</span><span class="hl-1"> </span><span class="hl-2">forge.class</span>
+</code><button type="button">Copy</button></pre>
+
+<p><strong>From GitHub:</strong></p>
+<pre><code class="bash"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">i</span><span class="hl-1"> </span><span class="hl-2">github:Daaisukidayo/ForgeClass#main</span>
+</code><button type="button">Copy</button></pre>
+
+<p>It needs <strong>ForgeScript 1.4.0</strong> and <strong>Node.js 22</strong> or newer.</p>
+</li>
+<li>
+<p>Here's an example of how your main file should look:</p>
+<pre><code class="js"><span class="hl-3">const</span><span class="hl-1"> { </span><span class="hl-4">ForgeClient</span><span class="hl-1"> } = </span><span class="hl-0">require</span><span class="hl-1">(</span><span class="hl-2">&quot;@tryforge/forgescript&quot;</span><span class="hl-1">)</span><br/><span class="hl-3">const</span><span class="hl-1"> { </span><span class="hl-4">ForgeClass</span><span class="hl-1"> } = </span><span class="hl-0">require</span><span class="hl-1">(</span><span class="hl-2">&quot;forge.class&quot;</span><span class="hl-1">)</span><br/><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-4">client</span><span class="hl-1"> = </span><span class="hl-3">new</span><span class="hl-1"> </span><span class="hl-0">ForgeClient</span><span class="hl-1">({</span><br/><span class="hl-1">    ...</span><span class="hl-5">options</span><span class="hl-1">, </span><span class="hl-6">// Change that to the options you currently have</span><br/><span class="hl-1">    </span><span class="hl-5">extensions:</span><span class="hl-1"> [</span><br/><span class="hl-1">        </span><span class="hl-3">new</span><span class="hl-1"> </span><span class="hl-0">ForgeClass</span><span class="hl-1">(),</span><br/><span class="hl-1">        </span><span class="hl-6">// Add other extensions you installed here</span><br/><span class="hl-1">    ]</span><br/><span class="hl-1">})</span><br/><br/><span class="hl-5">client</span><span class="hl-1">.</span><span class="hl-0">login</span><span class="hl-1">(</span><span class="hl-2">&quot;YourToken&quot;</span><span class="hl-1">)</span>
+</code><button type="button">Copy</button></pre>
+
+</li>
+</ol>
+<h3 align="center">Quick start</h3><hr>
+<pre><code><span class="hl-5">$class</span><span class="hl-1">[</span><span class="hl-5">Player</span><span class="hl-1">;</span><br/><span class="hl-1">    </span><span class="hl-5">$field</span><span class="hl-1">[</span><span class="hl-5">name</span><span class="hl-1">]</span><br/><span class="hl-1">    </span><span class="hl-5">$field</span><span class="hl-1">[</span><span class="hl-5">hp</span><span class="hl-1">;</span><span class="hl-7">100</span><span class="hl-1">]</span><br/><span class="hl-1">    </span><span class="hl-5">$constructor</span><span class="hl-1">[</span><span class="hl-5">$setField</span><span class="hl-1">[</span><span class="hl-3">this</span><span class="hl-1">;</span><span class="hl-5">name</span><span class="hl-1">;</span><span class="hl-5">$env</span><span class="hl-1">[</span><span class="hl-5">name</span><span class="hl-1">]];</span><span class="hl-5">name</span><span class="hl-1">]</span><br/><span class="hl-1">    </span><span class="hl-5">$method</span><span class="hl-1">[</span><span class="hl-5">damage</span><span class="hl-1">;</span><br/><span class="hl-1">        </span><span class="hl-5">$setField</span><span class="hl-1">[</span><span class="hl-3">this</span><span class="hl-1">;</span><span class="hl-5">hp</span><span class="hl-1">;</span><span class="hl-5">$math</span><span class="hl-1">[</span><span class="hl-5">$getField</span><span class="hl-1">[</span><span class="hl-3">this</span><span class="hl-1">;</span><span class="hl-5">hp</span><span class="hl-1">]-</span><span class="hl-5">$env</span><span class="hl-1">[</span><span class="hl-5">amount</span><span class="hl-1">]]]</span><br/><span class="hl-1">        </span><span class="hl-5">$return</span><span class="hl-1">[</span><span class="hl-5">$getField</span><span class="hl-1">[</span><span class="hl-3">this</span><span class="hl-1">;</span><span class="hl-5">hp</span><span class="hl-1">]]</span><br/><span class="hl-1">    ;</span><span class="hl-5">amount</span><span class="hl-1">]</span><br/><span class="hl-1">]</span><br/><br/><span class="hl-5">$new</span><span class="hl-1">[</span><span class="hl-5">p</span><span class="hl-1">;</span><span class="hl-5">Player</span><span class="hl-1">;</span><span class="hl-5">Steve</span><span class="hl-1">]</span><br/><span class="hl-5">$callMethod</span><span class="hl-1">[</span><span class="hl-5">p</span><span class="hl-1">;</span><span class="hl-5">damage</span><span class="hl-1">;</span><span class="hl-7">30</span><span class="hl-1">]   → </span><span class="hl-7">70</span><br/><span class="hl-5">$getField</span><span class="hl-1">[</span><span class="hl-5">p</span><span class="hl-1">;</span><span class="hl-5">hp</span><span class="hl-1">]            → </span><span class="hl-7">70</span><br/><span class="hl-5">$instanceOf</span><span class="hl-1">[</span><span class="hl-5">p</span><span class="hl-1">;</span><span class="hl-5">Player</span><span class="hl-1">]      → </span><span class="hl-3">true</span>
+</code><button>Copy</button></pre>
+
+<h3 align="center">Functions</h3><hr>
+<h3 id="declaring-a-class" class="tsd-anchor-link">Declaring a class<a href="#declaring-a-class" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>All but <code>$class</code> work only inside its body.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>$class[name;body]</code></strong></td>
+<td>Declares a class. The body outputs nothing.</td>
+</tr>
+<tr>
+<td><strong><code>$field[name;default?]</code></strong></td>
+<td>Declares a field. The default is code run for every new instance, empty without one.</td>
+</tr>
+<tr>
+<td><strong><code>$method[name;code;...params]</code></strong></td>
+<td>Declares a method.</td>
+</tr>
+<tr>
+<td><strong><code>$constructor[code;...params]</code></strong></td>
+<td>Declares the constructor, which <code>$new</code> runs.</td>
+</tr>
+<tr>
+<td><strong><code>$extends[parent]</code></strong></td>
+<td>Sets the parent class.</td>
+</tr>
+<tr>
+<td><strong><code>$param[name;type;required?;rest?]</code></strong></td>
+<td>Declares a typed param, among the params of <code>$method</code> or <code>$constructor</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="working-with-instances" class="tsd-anchor-link">Working with instances<a href="#working-with-instances" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Returns</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>$new[variable;class;...args]</code></strong></td>
+<td>—</td>
+<td>Creates an instance in a variable.</td>
+</tr>
+<tr>
+<td><strong><code>$callMethod[variable;method;...args]</code></strong></td>
+<td>what the method returns</td>
+<td>Calls a method.</td>
+</tr>
+<tr>
+<td><strong><code>$super[method;...args]</code></strong></td>
+<td>what the method returns</td>
+<td>Inside a method, calls the parent class's one on the same instance. <code>$super[constructor;...]</code> runs the parent's constructor.</td>
+</tr>
+<tr>
+<td><strong><code>$getField[variable;field]</code></strong></td>
+<td>the value</td>
+<td>Reads a field.</td>
+</tr>
+<tr>
+<td><strong><code>$setField[variable;field;value]</code></strong></td>
+<td>—</td>
+<td>Sets a field the class declares.</td>
+</tr>
+<tr>
+<td><strong><code>$hasField[variable;field]</code></strong></td>
+<td>boolean</td>
+<td>Whether the class declares the field.</td>
+</tr>
+<tr>
+<td><strong><code>$instanceFields[variable]</code></strong></td>
+<td>JSON object</td>
+<td>The fields, without <code>__class</code>.</td>
+</tr>
+<tr>
+<td><strong><code>$className[variable]</code></strong></td>
+<td>string</td>
+<td>The class of the instance.</td>
+</tr>
+<tr>
+<td><strong><code>$instanceOf[variable;class]</code></strong></td>
+<td>boolean</td>
+<td>Whether it is of that class or of one extending it.</td>
+</tr>
+<tr>
+<td><strong><code>$isInstance[variable]</code></strong></td>
+<td>boolean</td>
+<td>Whether the variable holds an instance.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="classes" class="tsd-anchor-link">Classes<a href="#classes" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Returns</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>$classExists[class]</code></strong></td>
+<td>boolean</td>
+<td>Whether the class is declared.</td>
+</tr>
+<tr>
+<td><strong><code>$classFields[class]</code></strong></td>
+<td>JSON array</td>
+<td>Its fields, inherited ones included.</td>
+</tr>
+<tr>
+<td><strong><code>$classMethods[class]</code></strong></td>
+<td>JSON array</td>
+<td>Its methods, inherited ones included, without the constructor.</td>
+</tr>
+<tr>
+<td><strong><code>$classParent[class]</code></strong></td>
+<td>string</td>
+<td>The class it extends, empty when none.</td>
+</tr>
+<tr>
+<td><strong><code>$deleteClass[class]</code></strong></td>
+<td>boolean</td>
+<td>Deletes the class unless another one extends it. Says whether there was one.</td>
+</tr>
+</tbody>
+</table>
+<h3 align="center">How it works</h3><hr>
+<p><strong>Instances</strong> are plain objects in a variable, with the class name in a <code>__class</code> field that can't be changed.</p>
+<p><strong>Field values</strong> are stored as numbers, <code>true</code>, <code>false</code> or JSON when they are one, and as text otherwise. A number that wouldn't read back the same, like a Discord ID or <code>007</code>, stays text, so IDs stay exact.</p>
+<p><strong>Methods</strong></p>
+<ul>
+<li>The instance is <code>this</code>: <code>$getField[this;hp]</code>, <code>$callMethod[this;other]</code>.</li>
+<li>Arguments are read with <code>$env[param]</code>. A plain param gets the text as it is, a <code>$param</code> one is converted the way ForgeScript converts its own functions' arguments:<pre><code><span class="hl-5">$method</span><span class="hl-1">[</span><span class="hl-5">give</span><span class="hl-1">;</span><span class="hl-5">$return</span><span class="hl-1">[</span><span class="hl-5">$env</span><span class="hl-1">[</span><span class="hl-5">target</span><span class="hl-1">;</span><span class="hl-5">username</span><span class="hl-1">] </span><span class="hl-5">gets</span><span class="hl-1"> </span><span class="hl-5">$arrayJoin</span><span class="hl-1">[</span><span class="hl-5">items</span><span class="hl-1">;, ]];</span><span class="hl-5">$param</span><span class="hl-1">[</span><span class="hl-5">target</span><span class="hl-1">;</span><span class="hl-5">User</span><span class="hl-1">];</span><span class="hl-5">$param</span><span class="hl-1">[</span><span class="hl-5">items</span><span class="hl-1">;</span><span class="hl-5">String</span><span class="hl-1">;</span><span class="hl-3">false</span><span class="hl-1">;</span><span class="hl-3">true</span><span class="hl-1">]]</span>
+</code><button>Copy</button></pre>
+
+An optional param may be left out, and a rest one takes the remaining arguments as an array.</li>
+<li>A method returns what <code>$return</code> gives, or else what it outputs.</li>
+</ul>
+<p><strong>Inheritance</strong></p>
+<ul>
+<li>Fields and methods come from every parent up the chain.</li>
+<li>A field declared again keeps its place, with the child's default.</li>
+<li>A class without a constructor uses its parent's.</li>
+</ul>
+<h3 align="center">Private members</h3><hr>
+<p>A <code>#</code> before a field or method name makes it private, as in JavaScript:</p>
+<pre><code><span class="hl-5">$class</span><span class="hl-1">[</span><span class="hl-5">Wallet</span><span class="hl-1">;</span><br/><span class="hl-1">    </span><span class="hl-5">$field</span><span class="hl-1">[#</span><span class="hl-5">pin</span><span class="hl-1">;</span><span class="hl-7">1234</span><span class="hl-1">]</span><br/><span class="hl-1">    </span><span class="hl-5">$method</span><span class="hl-1">[#</span><span class="hl-5">check</span><span class="hl-1">;</span><span class="hl-5">$if</span><span class="hl-1">[</span><span class="hl-5">$env</span><span class="hl-1">[</span><span class="hl-5">pin</span><span class="hl-1">]==</span><span class="hl-5">$getField</span><span class="hl-1">[</span><span class="hl-3">this</span><span class="hl-1">;#</span><span class="hl-5">pin</span><span class="hl-1">];</span><span class="hl-3">true</span><span class="hl-1">;</span><span class="hl-3">false</span><span class="hl-1">];</span><span class="hl-5">pin</span><span class="hl-1">]</span><br/><span class="hl-1">    </span><span class="hl-5">$method</span><span class="hl-1">[</span><span class="hl-5">unlock</span><span class="hl-1">;</span><span class="hl-5">$callMethod</span><span class="hl-1">[</span><span class="hl-3">this</span><span class="hl-1">;#</span><span class="hl-5">check</span><span class="hl-1">;</span><span class="hl-5">$env</span><span class="hl-1">[</span><span class="hl-5">pin</span><span class="hl-1">]];</span><span class="hl-5">pin</span><span class="hl-1">]</span><br/><span class="hl-1">]</span><br/><br/><span class="hl-5">$new</span><span class="hl-1">[</span><span class="hl-5">w</span><span class="hl-1">;</span><span class="hl-5">Wallet</span><span class="hl-1">]</span><br/><span class="hl-5">$callMethod</span><span class="hl-1">[</span><span class="hl-5">w</span><span class="hl-1">;</span><span class="hl-5">unlock</span><span class="hl-1">;</span><span class="hl-7">1234</span><span class="hl-1">]   → </span><span class="hl-3">true</span><br/><span class="hl-5">$getField</span><span class="hl-1">[</span><span class="hl-5">w</span><span class="hl-1">;#</span><span class="hl-5">pin</span><span class="hl-1">]            → </span><span class="hl-5">error</span>
+</code><button>Copy</button></pre>
+
+<ul>
+<li>Only the methods of the class that declares it reach it, on any instance of that class. A child class doesn't, and neither does <code>$super</code>.</li>
+<li>A parent's <code>#x</code> and a child's <code>#x</code> are different members, and <code>#x</code> and <code>x</code> can live side by side.</li>
+<li>It isn't kept on the instance, so <code>$env</code>, <code>$instanceFields</code>, <code>$classFields</code> and <code>$classMethods</code> don't show it.</li>
+</ul>
+<h3 align="center">Class files</h3><hr>
+<p>For classes used everywhere, load them from a folder before the client logs in:</p>
+<pre><code class="js"><span class="hl-5">client</span><span class="hl-1">.</span><span class="hl-5">classes</span><span class="hl-1">.</span><span class="hl-0">load</span><span class="hl-1">(</span><span class="hl-2">&quot;./classes&quot;</span><span class="hl-1">)</span>
+</code><button type="button">Copy</button></pre>
+
+<p>A file exports one class or an array of them:</p>
+<pre><code class="js"><span class="hl-8">module</span><span class="hl-1">.</span><span class="hl-8">exports</span><span class="hl-1"> = {</span><br/><span class="hl-1">    </span><span class="hl-5">name:</span><span class="hl-1"> </span><span class="hl-2">&quot;Player&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-5">extends:</span><span class="hl-1"> </span><span class="hl-2">&quot;Entity&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-5">fields:</span><span class="hl-1"> { </span><span class="hl-5">hp:</span><span class="hl-1"> </span><span class="hl-2">&quot;100&quot;</span><span class="hl-1">, </span><span class="hl-5">name:</span><span class="hl-1"> </span><span class="hl-2">&quot;&quot;</span><span class="hl-1"> },</span><br/><span class="hl-1">    </span><span class="hl-5">methods:</span><span class="hl-1"> {</span><br/><span class="hl-1">        </span><span class="hl-5">constructor:</span><span class="hl-1"> {</span><br/><span class="hl-1">            </span><span class="hl-5">params:</span><span class="hl-1"> [</span><span class="hl-2">&quot;name&quot;</span><span class="hl-1">],</span><br/><span class="hl-1">            </span><span class="hl-5">code:</span><span class="hl-1"> </span><span class="hl-2">`</span><br/><span class="hl-2">                $setField[this;name;$env[name]]</span><br/><span class="hl-2">            `</span><span class="hl-1">,</span><br/><span class="hl-1">        },</span><br/><span class="hl-1">        </span><span class="hl-5">damage:</span><span class="hl-1"> {</span><br/><span class="hl-1">            </span><span class="hl-5">params:</span><span class="hl-1"> [{ </span><span class="hl-5">name:</span><span class="hl-1"> </span><span class="hl-2">&quot;amount&quot;</span><span class="hl-1">, </span><span class="hl-5">type:</span><span class="hl-1"> </span><span class="hl-2">&quot;Number&quot;</span><span class="hl-1"> }],</span><br/><span class="hl-1">            </span><span class="hl-5">code:</span><span class="hl-1"> </span><span class="hl-2">`</span><br/><span class="hl-2">                $setField[this;hp;$math[$getField[this;hp]-$env[amount]]]</span><br/><span class="hl-2">            `</span><span class="hl-1">,</span><br/><span class="hl-1">        },</span><br/><span class="hl-1">        </span><span class="hl-5">greet:</span><span class="hl-1"> </span><span class="hl-2">&quot;Hi, $getField[this;name]!&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">}</span>
+</code><button type="button">Copy</button></pre>
+
+<p>A param is either a name or a <code>{ name, type, required, rest }</code> object. <code>client.classes.add({ ... })</code> takes the same objects. When one class can't be used, it throws and none of them is added.</p>
+<h3 align="center">Keeping instances</h3><hr>
+<p>An instance lives as long as the command, but it comes back from its own JSON. Save <code>$env[p]</code> anywhere and load it in another command:</p>
+<pre><code><span class="hl-5">$jsonLoad</span><span class="hl-1">[</span><span class="hl-5">p</span><span class="hl-1">;</span><span class="hl-5">the</span><span class="hl-1"> </span><span class="hl-5">saved</span><span class="hl-1"> </span><span class="hl-4">JSON</span><span class="hl-1">]</span><br/><span class="hl-5">$callMethod</span><span class="hl-1">[</span><span class="hl-5">p</span><span class="hl-1">;</span><span class="hl-5">greet</span><span class="hl-1">]   → </span><span class="hl-5">Hi</span><span class="hl-1">, </span><span class="hl-5">Steve</span><span class="hl-1">!</span>
+</code><button>Copy</button></pre>
+
+<p><a href="#private-members">Private</a> <code>#</code> fields aren't in the JSON.</p>
+</div></div>
+<div class="col-sidebar">
+<div class="page-menu">
+<div class="tsd-navigation settings">
+<details class="tsd-accordion"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg>
+<h3>Settings</h3></summary>
+<div class="tsd-accordion-details">
+<div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span>
+<ul id="tsd-filter-options">
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div>
+<div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
+<details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg>
+<h3>On This Page</h3></summary>
+<div class="tsd-accordion-details"><a href="#forgeclass"><span>Forge<wbr/>Class</span></a>
+<ul>
+<li><a href="#contents"><span>Contents</span></a></li>
+<li>
+<ul>
+<li><a href="#declaring-a-class"><span>Declaring a class</span></a></li>
+<li><a href="#working-with-instances"><span>Working with instances</span></a></li>
+<li><a href="#classes"><span>Classes</span></a></li></ul></li></ul></div></details></div>
+<div class="site-menu">
+<nav class="tsd-navigation"><a href="modules.html">forge.class</a>
+<ul class="tsd-small-nested-navigation" id="tsd-nav-container">
+<li>Loading...</li></ul></nav></div></div></div><footer>
+<p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer>
+<div class="overlay"></div></body></html>
