@@ -2,7 +2,7 @@
 
 # ForgeClass
 
-Classes for ForgeScript: fields, methods, constructors and inheritance.
+Classes for ForgeScript: fields, methods, constructors, inheritance, private members and typed params.
 
 <a href="https://github.com/Daaisukidayo/ForgeClass/"><img src="https://img.shields.io/github/package-json/v/Daaisukidayo/ForgeClass/main?label=forge.class&color=5c16d4" alt="forge.class"></a>
 <a href="https://github.com/tryforge/ForgeScript/"><img src="https://img.shields.io/github/package-json/v/tryforge/ForgeScript/main?label=@tryforge/forgescript&color=5c16d4" alt="@tryforge/forgescript"></a>

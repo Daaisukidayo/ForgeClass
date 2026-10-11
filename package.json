@@ -1,7 +1,7 @@
 {
   "name": "forge.class",
   "version": "1.0.0",
-  "description": "Adds classes for ForgeScript: fields, methods, constructors and inheritance.",
+  "description": "Adds classes to ForgeScript: fields, methods, constructors, inheritance, private members and typed params.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
