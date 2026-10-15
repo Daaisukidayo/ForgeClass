@@ -1,5 +1,6 @@
 import { Arg, NativeFunction } from "@tryforge/forgescript"
 import { CLASS_KEY, isHidden } from "../.."
+import { canReach, canWrite, unreachable } from "../../functions/access"
 import { hiddenField, slotOf } from "../../functions/hidden"
 import { instanceIn } from "../../functions/lookup"
 import { parseValue } from "../../functions/value"
@@ -26,12 +27,23 @@ export default new NativeFunction({
             const owner = hiddenField(ctx, def, field)
             if (!owner.ok) return this.customError(owner.reason)
 
+            if (owner.value.hiddenFields.get(field)?.readonly && !canWrite(ctx, instance)) {
+                return this.customError(`${owner.value.name}.${field} is readonly.`)
+            }
+
             classes.hiddenOf(instance).set(slotOf(owner.value, field), parseValue(value))
             return this.success()
         }
 
         if (field === CLASS_KEY) return this.customError(`"${CLASS_KEY}" holds the class name and can't be changed.`)
-        if (!classes.declares(def, field)) return this.customError(`${def.name} has no field ${field}.`)
+
+        const member = classes.fieldOf(def, field)
+        if (!member) return this.customError(`${def.name} has no field ${field}.`)
+        if (!canReach(ctx, member.owner, member.access)) {
+            return this.customError(unreachable(member.owner, field, member.access))
+        }
+        if (member.readonly && !canWrite(ctx, instance))
+            return this.customError(`${member.owner.name}.${field} is readonly.`)
 
         instance[field] = parseValue(value)
         return this.success()

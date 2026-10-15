@@ -10,7 +10,7 @@
 <h1>forge.class</h1></div>
 <div class="tsd-panel tsd-typography"><div align="center">
 <h1 id="forgeclass" class="tsd-anchor-link">ForgeClass<a href="#forgeclass" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h1>
-<p>Classes for ForgeScript: fields, methods, constructors and inheritance.</p>
+<p>Classes for ForgeScript: fields, methods, constructors, inheritance, private members and typed params.</p>
 <p><a href="https://github.com/Daaisukidayo/ForgeClass/"><img src="https://img.shields.io/github/package-json/v/Daaisukidayo/ForgeClass/main?label=forge.class&color=5c16d4" alt="forge.class"></a>
 <a href="https://github.com/tryforge/ForgeScript/"><img src="https://img.shields.io/github/package-json/v/tryforge/ForgeScript/main?label=@tryforge/forgescript&color=5c16d4" alt="@tryforge/forgescript"></a>
 <a href="https://discord.gg/yFW5Ju6JP8"><img src="https://img.shields.io/discord/997899472610795580?logo=discord" alt="Discord"></a></p>
@@ -22,7 +22,7 @@
 <li><a href="#quick-start">Quick start</a></li>
 <li><a href="#functions">Functions</a></li>
 <li><a href="#how-it-works">How it works</a></li>
-<li><a href="#private-members">Private members</a></li>
+<li><a href="#modifiers">Modifiers</a></li>
 <li><a href="#class-files">Class files</a></li>
 <li><a href="#keeping-instances">Keeping instances</a></li>
 </ol>
@@ -150,6 +150,33 @@
 </tr>
 </tbody>
 </table>
+<h3 id="static-members" class="tsd-anchor-link">Static members<a href="#static-members" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Returns</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>$getStatic[class;field]</code></strong></td>
+<td>the value</td>
+<td>Reads a static field.</td>
+</tr>
+<tr>
+<td><strong><code>$setStatic[class;field;value]</code></strong></td>
+<td>—</td>
+<td>Sets a static field.</td>
+</tr>
+<tr>
+<td><strong><code>$callStatic[class;method;...args]</code></strong></td>
+<td>what the method returns</td>
+<td>Calls a static method.</td>
+</tr>
+</tbody>
+</table>
 <h3 id="classes" class="tsd-anchor-link">Classes<a href="#classes" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <table>
 <thead>
@@ -205,8 +232,18 @@ An optional param may be left out, and a rest one takes the remaining arguments 
 <li>A field declared again keeps its place, with the child's default.</li>
 <li>A class without a constructor uses its parent's.</li>
 </ul>
-<h3 align="center">Private members</h3><hr>
-<p>A <code>#</code> before a field or method name makes it private, as in JavaScript:</p>
+<h3 align="center">Modifiers</h3><hr>
+<p>Words before a field or method name:</p>
+<pre><code><span class="hl-5">$class</span><span class="hl-1">[</span><span class="hl-5">Account</span><span class="hl-1">;</span><br/><span class="hl-1">    </span><span class="hl-5">$field</span><span class="hl-1">[</span><span class="hl-5">private</span><span class="hl-1"> </span><span class="hl-5">balance</span><span class="hl-1">;</span><span class="hl-7">0</span><span class="hl-1">]</span><br/><span class="hl-1">    </span><span class="hl-5">$field</span><span class="hl-1">[</span><span class="hl-5">protected</span><span class="hl-1"> </span><span class="hl-5">owner</span><span class="hl-1">]</span><br/><span class="hl-1">    </span><span class="hl-5">$field</span><span class="hl-1">[</span><span class="hl-5">readonly</span><span class="hl-1"> </span><span class="hl-5">id</span><span class="hl-1">;</span><span class="hl-5">$authorID</span><span class="hl-1">]</span><br/><span class="hl-1">    </span><span class="hl-5">$field</span><span class="hl-1">[</span><span class="hl-5">static</span><span class="hl-1"> </span><span class="hl-5">count</span><span class="hl-1">;</span><span class="hl-7">0</span><span class="hl-1">]</span><br/><span class="hl-1">    </span><span class="hl-5">$method</span><span class="hl-1">[</span><span class="hl-5">static</span><span class="hl-1"> </span><span class="hl-5">create</span><span class="hl-1">;...]</span><br/><span class="hl-1">]</span>
+</code><button>Copy</button></pre>
+
+<ul>
+<li><code>private</code> members are reached only from the methods of their class, <code>protected</code> ones from its children too.</li>
+<li><code>readonly</code> fields are set by their defaults or in the constructor. <code>$super[constructor]</code> works only in a constructor.</li>
+<li><code>static</code> members belong to the class and have no <code>this</code>. They live until the bot restarts or the class is declared again.</li>
+<li><code>$classFields</code>, <code>$classMethods</code> and, outside the class, <code>$instanceFields</code> list public members only.</li>
+</ul>
+<p>A <code>#</code> before the name makes a member private as in JavaScript instead:</p>
 <pre><code><span class="hl-5">$class</span><span class="hl-1">[</span><span class="hl-5">Wallet</span><span class="hl-1">;</span><br/><span class="hl-1">    </span><span class="hl-5">$field</span><span class="hl-1">[#</span><span class="hl-5">pin</span><span class="hl-1">;</span><span class="hl-7">1234</span><span class="hl-1">]</span><br/><span class="hl-1">    </span><span class="hl-5">$method</span><span class="hl-1">[#</span><span class="hl-5">check</span><span class="hl-1">;</span><span class="hl-5">$if</span><span class="hl-1">[</span><span class="hl-5">$env</span><span class="hl-1">[</span><span class="hl-5">pin</span><span class="hl-1">]==</span><span class="hl-5">$getField</span><span class="hl-1">[</span><span class="hl-3">this</span><span class="hl-1">;#</span><span class="hl-5">pin</span><span class="hl-1">];</span><span class="hl-3">true</span><span class="hl-1">;</span><span class="hl-3">false</span><span class="hl-1">];</span><span class="hl-5">pin</span><span class="hl-1">]</span><br/><span class="hl-1">    </span><span class="hl-5">$method</span><span class="hl-1">[</span><span class="hl-5">unlock</span><span class="hl-1">;</span><span class="hl-5">$callMethod</span><span class="hl-1">[</span><span class="hl-3">this</span><span class="hl-1">;#</span><span class="hl-5">check</span><span class="hl-1">;</span><span class="hl-5">$env</span><span class="hl-1">[</span><span class="hl-5">pin</span><span class="hl-1">]];</span><span class="hl-5">pin</span><span class="hl-1">]</span><br/><span class="hl-1">]</span><br/><br/><span class="hl-5">$new</span><span class="hl-1">[</span><span class="hl-5">w</span><span class="hl-1">;</span><span class="hl-5">Wallet</span><span class="hl-1">]</span><br/><span class="hl-5">$callMethod</span><span class="hl-1">[</span><span class="hl-5">w</span><span class="hl-1">;</span><span class="hl-5">unlock</span><span class="hl-1">;</span><span class="hl-7">1234</span><span class="hl-1">]   → </span><span class="hl-3">true</span><br/><span class="hl-5">$getField</span><span class="hl-1">[</span><span class="hl-5">w</span><span class="hl-1">;#</span><span class="hl-5">pin</span><span class="hl-1">]            → </span><span class="hl-5">error</span>
 </code><button>Copy</button></pre>
 
@@ -224,13 +261,17 @@ An optional param may be left out, and a rest one takes the remaining arguments 
 <pre><code class="js"><span class="hl-8">module</span><span class="hl-1">.</span><span class="hl-8">exports</span><span class="hl-1"> = {</span><br/><span class="hl-1">    </span><span class="hl-5">name:</span><span class="hl-1"> </span><span class="hl-2">&quot;Player&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-5">extends:</span><span class="hl-1"> </span><span class="hl-2">&quot;Entity&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-5">fields:</span><span class="hl-1"> { </span><span class="hl-5">hp:</span><span class="hl-1"> </span><span class="hl-2">&quot;100&quot;</span><span class="hl-1">, </span><span class="hl-5">name:</span><span class="hl-1"> </span><span class="hl-2">&quot;&quot;</span><span class="hl-1"> },</span><br/><span class="hl-1">    </span><span class="hl-5">methods:</span><span class="hl-1"> {</span><br/><span class="hl-1">        </span><span class="hl-5">constructor:</span><span class="hl-1"> {</span><br/><span class="hl-1">            </span><span class="hl-5">params:</span><span class="hl-1"> [</span><span class="hl-2">&quot;name&quot;</span><span class="hl-1">],</span><br/><span class="hl-1">            </span><span class="hl-5">code:</span><span class="hl-1"> </span><span class="hl-2">`</span><br/><span class="hl-2">                $setField[this;name;$env[name]]</span><br/><span class="hl-2">            `</span><span class="hl-1">,</span><br/><span class="hl-1">        },</span><br/><span class="hl-1">        </span><span class="hl-5">damage:</span><span class="hl-1"> {</span><br/><span class="hl-1">            </span><span class="hl-5">params:</span><span class="hl-1"> [{ </span><span class="hl-5">name:</span><span class="hl-1"> </span><span class="hl-2">&quot;amount&quot;</span><span class="hl-1">, </span><span class="hl-5">type:</span><span class="hl-1"> </span><span class="hl-2">&quot;Number&quot;</span><span class="hl-1"> }],</span><br/><span class="hl-1">            </span><span class="hl-5">code:</span><span class="hl-1"> </span><span class="hl-2">`</span><br/><span class="hl-2">                $setField[this;hp;$math[$getField[this;hp]-$env[amount]]]</span><br/><span class="hl-2">            `</span><span class="hl-1">,</span><br/><span class="hl-1">        },</span><br/><span class="hl-1">        </span><span class="hl-5">greet:</span><span class="hl-1"> </span><span class="hl-2">&quot;Hi, $getField[this;name]!&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">}</span>
 </code><button type="button">Copy</button></pre>
 
-<p>A param is either a name or a <code>{ name, type, required, rest }</code> object. <code>client.classes.add({ ... })</code> takes the same objects. When one class can't be used, it throws and none of them is added.</p>
+<p>Or the same object wrapped in <code>ForgeClassBuilder</code>:</p>
+<pre><code class="js"><span class="hl-3">const</span><span class="hl-1"> { </span><span class="hl-4">ForgeClassBuilder</span><span class="hl-1"> } = </span><span class="hl-0">require</span><span class="hl-1">(</span><span class="hl-2">&quot;forge.class&quot;</span><span class="hl-1">)</span><br/><br/><span class="hl-8">module</span><span class="hl-1">.</span><span class="hl-8">exports</span><span class="hl-1"> = </span><span class="hl-3">new</span><span class="hl-1"> </span><span class="hl-0">ForgeClassBuilder</span><span class="hl-1">({ </span><span class="hl-5">name:</span><span class="hl-1"> </span><span class="hl-2">&quot;Player&quot;</span><span class="hl-1">, ... })</span>
+</code><button type="button">Copy</button></pre>
+
+<p>A param is either a name or a <code>{ name, type, required, rest }</code> object. <code>client.classes.add()</code> takes objects and builders alike. When one class can't be used, it throws and none of them is added.</p>
 <h3 align="center">Keeping instances</h3><hr>
 <p>An instance lives as long as the command, but it comes back from its own JSON. Save <code>$env[p]</code> anywhere and load it in another command:</p>
 <pre><code><span class="hl-5">$jsonLoad</span><span class="hl-1">[</span><span class="hl-5">p</span><span class="hl-1">;</span><span class="hl-5">the</span><span class="hl-1"> </span><span class="hl-5">saved</span><span class="hl-1"> </span><span class="hl-4">JSON</span><span class="hl-1">]</span><br/><span class="hl-5">$callMethod</span><span class="hl-1">[</span><span class="hl-5">p</span><span class="hl-1">;</span><span class="hl-5">greet</span><span class="hl-1">]   → </span><span class="hl-5">Hi</span><span class="hl-1">, </span><span class="hl-5">Steve</span><span class="hl-1">!</span>
 </code><button>Copy</button></pre>
 
-<p><a href="#private-members">Private</a> <code>#</code> fields aren't in the JSON.</p>
+<p><a href="#modifiers">Private</a> <code>#</code> fields aren't in the JSON.</p>
 </div></div>
 <div class="col-sidebar">
 <div class="page-menu">
@@ -253,6 +294,7 @@ An optional param may be left out, and a rest one takes the remaining arguments 
 <ul>
 <li><a href="#declaring-a-class"><span>Declaring a class</span></a></li>
 <li><a href="#working-with-instances"><span>Working with instances</span></a></li>
+<li><a href="#static-members"><span>Static members</span></a></li>
 <li><a href="#classes"><span>Classes</span></a></li></ul></li></ul></div></details></div>
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="modules.html">forge.class</a>

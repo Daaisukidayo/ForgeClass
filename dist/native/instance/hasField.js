@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const forgescript_1 = require("@tryforge/forgescript");
 const __1 = require("../..");
+const access_1 = require("../../functions/access");
 const hidden_1 = require("../../functions/hidden");
 const lookup_1 = require("../../functions/lookup");
 exports.default = new forgescript_1.NativeFunction({
@@ -22,7 +23,8 @@ exports.default = new forgescript_1.NativeFunction({
             const has = (0, hidden_1.hasHiddenField)(ctx, def, field);
             return has.ok ? this.success(has.value) : this.customError(has.reason);
         }
-        return this.success(classes.declares(def, field));
+        const member = classes.fieldOf(def, field);
+        return this.success(member !== null && (0, access_1.canReach)(ctx, member.owner, member.access));
     },
 });
 //# sourceMappingURL=hasField.js.map

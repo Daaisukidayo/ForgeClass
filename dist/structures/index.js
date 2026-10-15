@@ -16,5 +16,6 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./Body"), exports);
 __exportStar(require("./ClassDefinition"), exports);
+__exportStar(require("./ForgeClassBuilder"), exports);
 __exportStar(require("./Instance"), exports);
 //# sourceMappingURL=index.js.map

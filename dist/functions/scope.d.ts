@@ -7,7 +7,10 @@ export type ParamTypes = Map<string, Omit<IParam, "name">>;
 export interface IFrame {
     /** Class that declares the method. */
     owner: ClassDefinition;
-    instance: IInstance;
+    /** Null in a static method. */
+    instance: IInstance | null;
+    /** Null while a field default runs. */
+    method: string | null;
 }
 declare module "@tryforge/forgescript" {
     interface Context {

@@ -1,5 +1,6 @@
 import { Arg, ArgType, NativeFunction } from "@tryforge/forgescript"
 import { isHidden } from "../.."
+import { canReach } from "../../functions/access"
 import { hasHiddenField } from "../../functions/hidden"
 import { instanceIn } from "../../functions/lookup"
 
@@ -24,6 +25,7 @@ export default new NativeFunction({
             return has.ok ? this.success(has.value) : this.customError(has.reason)
         }
 
-        return this.success(classes.declares(def, field))
+        const member = classes.fieldOf(def, field)
+        return this.success(member !== null && canReach(ctx, member.owner, member.access))
     },
 })

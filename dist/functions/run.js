@@ -3,7 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.failureOf = failureOf;
 exports.runMethod = runMethod;
 exports.construct = construct;
+exports.staticOf = staticOf;
 const forgescript_1 = require("@tryforge/forgescript");
+const node_async_hooks_1 = require("node:async_hooks");
 const structures_1 = require("../structures");
 const hidden_1 = require("./hidden");
 const params_1 = require("./params");
@@ -43,9 +45,10 @@ async function runMethod(fn, ctx, instance, method, args) {
     if (!values.success)
         return values;
     const scope = ctx.clone();
-    scope.setEnvironmentKey("this", instance);
+    if (instance)
+        scope.setEnvironmentKey("this", instance);
     method.params.forEach((param, i) => scope.setEnvironmentKey(param.name, values.value[i]));
-    scope[scope_1.FRAME] = { owner: method.owner, instance };
+    scope[scope_1.FRAME] = { owner: method.owner, instance, method: method.name };
     return runIn(fn, scope, method.body, where);
 }
 /** Field defaults from the root class down, then the constructor. Succeeds with the instance. */
@@ -55,6 +58,7 @@ async function construct(fn, ctx, def, args) {
     const scope = ctx.clone();
     scope.setEnvironmentKey("this", instance);
     for (const [field, { owner, body }] of classes.fieldsOf(def)) {
+        scope[scope_1.FRAME] = { owner, instance, method: null };
         const rt = await runIn(fn, scope, body, `the default of ${owner.name}.${field}`, false);
         if (!rt.success)
             return rt;
@@ -66,8 +70,8 @@ async function construct(fn, ctx, def, args) {
         // as the class's own code, so its defaults reach its other # fields
         const own = ctx.clone();
         own.setEnvironmentKey("this", instance);
-        own[scope_1.FRAME] = { owner, instance };
-        for (const [field, body] of owner.hiddenFields) {
+        own[scope_1.FRAME] = { owner, instance, method: null };
+        for (const [field, { body }] of owner.hiddenFields) {
             const rt = await runIn(fn, own, body, `the default of ${owner.name}.${field}`, false);
             if (!rt.success)
                 return rt;
@@ -84,5 +88,23 @@ async function construct(fn, ctx, def, args) {
         return fn.customError(`${def.name} has no constructor, so it takes no arguments, got ${args.length}.`);
     }
     return new forgescript_1.Return(forgescript_1.ReturnType.Success, instance);
+}
+// what this run is filling, so a default reading its own field errors instead of looping
+const filling = new node_async_hooks_1.AsyncLocalStorage();
+/** A static field's value, its default run on first use. */
+async function staticOf(fn, ctx, owner, name, body) {
+    if (owner.statics.has(name))
+        return new forgescript_1.Return(forgescript_1.ReturnType.Success, owner.statics.get(name));
+    const where = `${owner.name}.${name}`;
+    if (filling.getStore()?.has(where))
+        return fn.customError(`${where} is read in its own default.`);
+    const scope = ctx.clone();
+    scope[scope_1.FRAME] = { owner, instance: null, method: null };
+    const rt = await filling.run(new Set(filling.getStore()).add(where), () => runIn(fn, scope, body, `the default of ${where}`, false));
+    if (!rt.success)
+        return rt;
+    if (!owner.statics.has(name))
+        owner.statics.set(name, (0, value_1.parseValue)(String(rt.value ?? "")));
+    return new forgescript_1.Return(forgescript_1.ReturnType.Success, owner.statics.get(name));
 }
 //# sourceMappingURL=run.js.map

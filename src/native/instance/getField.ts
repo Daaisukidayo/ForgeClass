@@ -1,5 +1,6 @@
 import { Arg, ArgType, NativeFunction } from "@tryforge/forgescript"
 import { isHidden } from "../.."
+import { canReach, unreachable } from "../../functions/access"
 import { hiddenField, slotOf } from "../../functions/hidden"
 import { instanceIn } from "../../functions/lookup"
 import { toText } from "../../functions/value"
@@ -26,7 +27,11 @@ export default new NativeFunction({
             return this.success(toText(classes.hiddenOf(instance).get(slotOf(owner.value, field))) ?? null)
         }
 
-        if (!classes.declares(def, field)) return this.customError(`${def.name} has no field ${field}.`)
+        const member = classes.fieldOf(def, field)
+        if (!member) return this.customError(`${def.name} has no field ${field}.`)
+        if (!canReach(ctx, member.owner, member.access)) {
+            return this.customError(unreachable(member.owner, field, member.access))
+        }
 
         // missing on instances made before the class got the field
         const value = Object.hasOwn(instance, field) ? instance[field] : undefined

@@ -1,5 +1,6 @@
 import { Arg, ArgType, NativeFunction } from "@tryforge/forgescript"
 import { CONSTRUCTOR, isHidden } from "../.."
+import { canReach, unreachable } from "../../functions/access"
 import { optionalRest } from "../../functions/args"
 import { hiddenMethod } from "../../functions/hidden"
 import { instanceIn } from "../../functions/lookup"
@@ -36,7 +37,17 @@ export default new NativeFunction({
             method = found.value
         } else {
             method = classes.findMethod(def, name)
-            if (!method) return this.customError(`${def.name} has no method ${name}.`)
+
+            if (!method) {
+                return this.customError(
+                    classes.staticMethodOf(def, name)
+                        ? `${def.name}.${name} is static, call it with $callStatic.`
+                        : `${def.name} has no method ${name}.`
+                )
+            }
+            if (!canReach(ctx, method.owner, method.access)) {
+                return this.customError(unreachable(method.owner, name, method.access))
+            }
         }
 
         const rt = await runMethod(this, ctx, instance, method, args)

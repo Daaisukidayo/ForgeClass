@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const forgescript_1 = require("@tryforge/forgescript");
 const __1 = require("../..");
+const access_1 = require("../../functions/access");
 const hidden_1 = require("../../functions/hidden");
 const lookup_1 = require("../../functions/lookup");
 const value_1 = require("../../functions/value");
@@ -25,8 +26,12 @@ exports.default = new forgescript_1.NativeFunction({
                 return this.customError(owner.reason);
             return this.success((0, value_1.toText)(classes.hiddenOf(instance).get((0, hidden_1.slotOf)(owner.value, field))) ?? null);
         }
-        if (!classes.declares(def, field))
+        const member = classes.fieldOf(def, field);
+        if (!member)
             return this.customError(`${def.name} has no field ${field}.`);
+        if (!(0, access_1.canReach)(ctx, member.owner, member.access)) {
+            return this.customError((0, access_1.unreachable)(member.owner, field, member.access));
+        }
         // missing on instances made before the class got the field
         const value = Object.hasOwn(instance, field) ? instance[field] : undefined;
         return this.success((0, value_1.toText)(value) ?? null);

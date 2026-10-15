@@ -92,7 +92,7 @@ describe("# members and inheritance", () => {
 
 describe("# names", () => {
     it("need a name after the #, and can't be #constructor", async () => {
-        assert.match(await failure("$class[A;$field[#]]"), /a # needs a name after it/)
+        assert.match(await failure("$class[A;$field[#]]"), /A # field needs a name after the #/)
         assert.match(await failure("$class[A;$method[#constructor;1]]"), /"#constructor" can't be a name/)
     })
 

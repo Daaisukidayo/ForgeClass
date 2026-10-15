@@ -49,9 +49,12 @@ class ClassManager {
         }
         return result_1.done;
     }
-    /** `define` for plain objects, throws instead of returning the reason. */
-    add(...data) {
-        this.addFrom(data.flat().map((item) => ({ item })));
+    /** `define` for plain objects and builders, throws instead of returning the reason. */
+    add(...options) {
+        this.addFrom(flatten(options).map((option) => ({ item: this.resolve(option).data })));
+    }
+    resolve(option) {
+        return option instanceof structures_1.ForgeClassBuilder ? option : new structures_1.ForgeClassBuilder(option);
     }
     load(dir) {
         const root = (0, node_path_1.resolve)(dir);
@@ -60,8 +63,7 @@ class ClassManager {
             const loaded = require((0, node_path_1.join)(root, file));
             if (Object.keys(loaded).length === 0)
                 return [];
-            const exported = loaded.default ?? loaded;
-            return [exported].flat().map((item) => ({ item, file }));
+            return flatten([loaded.default ?? loaded]).map((option) => ({ item: this.resolve(option).data, file }));
         }));
     }
     delete(name) {
@@ -93,19 +95,25 @@ class ClassManager {
         return chain;
     }
     findMethod(def, name) {
-        for (const owner of this.chainOf(def)) {
-            const method = owner.methods.get(name);
-            if (method)
-                return { ...method, name, owner };
-        }
-        return null;
+        return this.memberOf(def, name, (owner) => owner.methods);
     }
+    staticMethodOf(def, name) {
+        return this.memberOf(def, name, (owner) => owner.staticMethods);
+    }
+    fieldOf(def, name) {
+        return this.memberOf(def, name, (owner) => owner.fields);
+    }
+    staticFieldOf(def, name) {
+        return this.memberOf(def, name, (owner) => owner.staticFields);
+    }
+    /** Public ones, without the constructor. */
     methodNamesOf(def) {
         const names = new Set();
         for (const owner of this.chainOf(def)) {
-            for (const name of owner.methods.keys())
-                if (name !== structures_1.CONSTRUCTOR)
+            for (const [name, method] of owner.methods) {
+                if (name !== structures_1.CONSTRUCTOR && method.access === "public")
                     names.add(name);
+            }
         }
         return [...names];
     }
@@ -113,13 +121,21 @@ class ClassManager {
     fieldsOf(def) {
         const fields = new Map();
         for (const owner of this.chainOf(def).reverse()) {
-            for (const [name, body] of owner.fields)
-                fields.set(name, { owner, body });
+            for (const [name, field] of owner.fields)
+                fields.set(name, { ...field, owner });
         }
         return fields;
     }
     declares(def, field) {
-        return this.chainOf(def).some((owner) => owner.fields.has(field));
+        return this.fieldOf(def, field) !== null;
+    }
+    memberOf(def, name, members) {
+        for (const owner of this.chainOf(def)) {
+            const member = members(owner).get(name);
+            if (member)
+                return { ...member, name, owner };
+        }
+        return null;
     }
     isA(def, ancestor) {
         return this.chainOf(def).some((owner) => owner.name === ancestor);
@@ -154,6 +170,7 @@ class ClassManager {
     }
 }
 exports.ClassManager = ClassManager;
+const flatten = (options) => options.flat(Infinity);
 function definitionOf(data) {
     if (typeof data?.name !== "string" || !data.name)
         return (0, result_1.fail)("A class has no name.");

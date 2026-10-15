@@ -3,6 +3,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { after, beforeEach, describe, it } from "node:test"
+import { ForgeClassBuilder } from ".."
 import { bot, failure, output } from "./support/harness"
 
 const folders: string[] = []
@@ -86,5 +87,42 @@ describe("classes.load", () => {
     it("names the file of a class that can't be used", () => {
         const root = folderWith({ "bad.js": `module.exports = { name: "Bad", fields: { __class: "x" } }` })
         assert.throws(() => bot.ext.classes.load(root), /bad\.js: "__class" holds the class name/)
+    })
+})
+
+describe("ForgeClassBuilder", () => {
+    it("takes the same data as a plain object", async () => {
+        bot.ext.classes.add(new ForgeClassBuilder({ name: "Counter", fields: { count: 0 } }))
+        assert.equal(await output("$new[c;Counter]$getField[c;count]"), "0")
+    })
+
+    it("is taken next to plain objects, alone or in arrays", async () => {
+        bot.ext.classes.add([new ForgeClassBuilder({ name: "Dog", extends: "Animal", fields: { sound: "woof" } })], {
+            name: "Animal",
+            fields: { sound: "..." },
+            methods: { speak: "$return[$getField[this;sound]]" },
+        })
+
+        assert.equal(await output("$new[d;Dog]$callMethod[d;speak]"), "woof")
+    })
+
+    it("is loaded from a class file", async () => {
+        const index = JSON.stringify(join(__dirname, "..", "index.js"))
+        const root = folderWith({
+            "pets.js":
+                `const { ForgeClassBuilder } = require(${index})\n` +
+                `module.exports = [new ForgeClassBuilder({ name: "Cat", fields: { lives: 9 } }), { name: "Fish" }]`,
+        })
+
+        bot.ext.classes.load(root)
+
+        assert.equal(await output("$new[c;Cat]$getField[c;lives]|$classExists[Fish]"), "9|true")
+    })
+
+    it("wraps a plain object when resolved, and keeps a builder as it is", () => {
+        const builder = new ForgeClassBuilder({ name: "A" })
+
+        assert.equal(bot.ext.classes.resolve(builder), builder)
+        assert.ok(bot.ext.classes.resolve({ name: "B" }) instanceof ForgeClassBuilder)
     })
 })

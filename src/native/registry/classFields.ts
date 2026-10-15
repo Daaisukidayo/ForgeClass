@@ -16,6 +16,7 @@ export default new NativeFunction({
         const def = classNamed(classes, name)
         if (!def.ok) return this.customError(def.reason)
 
-        return this.success(stringify([...classes.fieldsOf(def.value).keys()]))
+        const fields = [...classes.fieldsOf(def.value)].filter(([, field]) => field.access === "public")
+        return this.success(stringify(fields.map(([name]) => name)))
     },
 })

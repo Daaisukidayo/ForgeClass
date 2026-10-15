@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const forgescript_1 = require("@tryforge/forgescript");
 const __1 = require("../..");
+const access_1 = require("../../functions/access");
 const args_1 = require("../../functions/args");
 const hidden_1 = require("../../functions/hidden");
 const lookup_1 = require("../../functions/lookup");
@@ -36,8 +37,14 @@ exports.default = new forgescript_1.NativeFunction({
         }
         else {
             method = classes.findMethod(def, name);
-            if (!method)
-                return this.customError(`${def.name} has no method ${name}.`);
+            if (!method) {
+                return this.customError(classes.staticMethodOf(def, name)
+                    ? `${def.name}.${name} is static, call it with $callStatic.`
+                    : `${def.name} has no method ${name}.`);
+            }
+            if (!(0, access_1.canReach)(ctx, method.owner, method.access)) {
+                return this.customError((0, access_1.unreachable)(method.owner, name, method.access));
+            }
         }
         const rt = await (0, run_1.runMethod)(this, ctx, instance, method, args);
         if (!rt.success)

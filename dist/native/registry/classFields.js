@@ -16,7 +16,8 @@ exports.default = new forgescript_1.NativeFunction({
         const def = (0, lookup_1.classNamed)(classes, name);
         if (!def.ok)
             return this.customError(def.reason);
-        return this.success((0, value_1.stringify)([...classes.fieldsOf(def.value).keys()]));
+        const fields = [...classes.fieldsOf(def.value)].filter(([, field]) => field.access === "public");
+        return this.success((0, value_1.stringify)(fields.map(([name]) => name)));
     },
 });
 //# sourceMappingURL=classFields.js.map

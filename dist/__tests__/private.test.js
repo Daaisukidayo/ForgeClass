@@ -72,7 +72,7 @@ const WALLET = "$class[Wallet;" +
 });
 (0, node_test_1.describe)("# names", () => {
     (0, node_test_1.it)("need a name after the #, and can't be #constructor", async () => {
-        strict_1.default.match(await (0, harness_1.failure)("$class[A;$field[#]]"), /a # needs a name after it/);
+        strict_1.default.match(await (0, harness_1.failure)("$class[A;$field[#]]"), /A # field needs a name after the #/);
         strict_1.default.match(await (0, harness_1.failure)("$class[A;$method[#constructor;1]]"), /"#constructor" can't be a name/);
     });
     (0, node_test_1.it)("work in class files", async () => {

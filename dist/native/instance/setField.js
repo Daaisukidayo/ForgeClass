@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const forgescript_1 = require("@tryforge/forgescript");
 const __1 = require("../..");
+const access_1 = require("../../functions/access");
 const hidden_1 = require("../../functions/hidden");
 const lookup_1 = require("../../functions/lookup");
 const value_1 = require("../../functions/value");
@@ -26,13 +27,22 @@ exports.default = new forgescript_1.NativeFunction({
             const owner = (0, hidden_1.hiddenField)(ctx, def, field);
             if (!owner.ok)
                 return this.customError(owner.reason);
+            if (owner.value.hiddenFields.get(field)?.readonly && !(0, access_1.canWrite)(ctx, instance)) {
+                return this.customError(`${owner.value.name}.${field} is readonly.`);
+            }
             classes.hiddenOf(instance).set((0, hidden_1.slotOf)(owner.value, field), (0, value_1.parseValue)(value));
             return this.success();
         }
         if (field === __1.CLASS_KEY)
             return this.customError(`"${__1.CLASS_KEY}" holds the class name and can't be changed.`);
-        if (!classes.declares(def, field))
+        const member = classes.fieldOf(def, field);
+        if (!member)
             return this.customError(`${def.name} has no field ${field}.`);
+        if (!(0, access_1.canReach)(ctx, member.owner, member.access)) {
+            return this.customError((0, access_1.unreachable)(member.owner, field, member.access));
+        }
+        if (member.readonly && !(0, access_1.canWrite)(ctx, instance))
+            return this.customError(`${member.owner.name}.${field} is readonly.`);
         instance[field] = (0, value_1.parseValue)(value);
         return this.success();
     },

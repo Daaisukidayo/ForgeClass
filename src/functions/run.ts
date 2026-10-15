@@ -1,4 +1,5 @@
 import { CompiledFunction, Context, Return, ReturnType } from "@tryforge/forgescript"
+import { AsyncLocalStorage } from "node:async_hooks"
 import { Body, ClassDefinition, CLASS_KEY, Code, CONSTRUCTOR, IInstance } from "../structures"
 import { IFoundMethod } from "../managers"
 import { slotOf } from "./hidden"
@@ -33,7 +34,7 @@ async function runIn(fn: CompiledFunction, scope: Context, body: Body, where: st
 export async function runMethod(
     fn: CompiledFunction,
     ctx: Context,
-    instance: IInstance,
+    instance: IInstance | null,
     method: IFoundMethod,
     args: string[]
 ) {
@@ -53,9 +54,9 @@ export async function runMethod(
     if (!values.success) return values
 
     const scope = ctx.clone()
-    scope.setEnvironmentKey("this", instance)
+    if (instance) scope.setEnvironmentKey("this", instance)
     method.params.forEach((param, i) => scope.setEnvironmentKey(param.name, (values.value as unknown[])[i]))
-    scope[FRAME] = { owner: method.owner, instance }
+    scope[FRAME] = { owner: method.owner, instance, method: method.name }
 
     return runIn(fn, scope, method.body, where)
 }
@@ -69,6 +70,8 @@ export async function construct(fn: CompiledFunction, ctx: Context, def: ClassDe
     scope.setEnvironmentKey("this", instance)
 
     for (const [field, { owner, body }] of classes.fieldsOf(def)) {
+        scope[FRAME] = { owner, instance, method: null }
+
         const rt = await runIn(fn, scope, body, `the default of ${owner.name}.${field}`, false)
         if (!rt.success) return rt
 
@@ -81,9 +84,9 @@ export async function construct(fn: CompiledFunction, ctx: Context, def: ClassDe
         // as the class's own code, so its defaults reach its other # fields
         const own = ctx.clone()
         own.setEnvironmentKey("this", instance)
-        own[FRAME] = { owner, instance }
+        own[FRAME] = { owner, instance, method: null }
 
-        for (const [field, body] of owner.hiddenFields) {
+        for (const [field, { body }] of owner.hiddenFields) {
             const rt = await runIn(fn, own, body, `the default of ${owner.name}.${field}`, false)
             if (!rt.success) return rt
 
@@ -101,4 +104,26 @@ export async function construct(fn: CompiledFunction, ctx: Context, def: ClassDe
     }
 
     return new Return(ReturnType.Success, instance)
+}
+
+// what this run is filling, so a default reading its own field errors instead of looping
+const filling = new AsyncLocalStorage<Set<string>>()
+
+/** A static field's value, its default run on first use. */
+export async function staticOf(fn: CompiledFunction, ctx: Context, owner: ClassDefinition, name: string, body: Body) {
+    if (owner.statics.has(name)) return new Return(ReturnType.Success, owner.statics.get(name))
+
+    const where = `${owner.name}.${name}`
+    if (filling.getStore()?.has(where)) return fn.customError(`${where} is read in its own default.`)
+
+    const scope = ctx.clone()
+    scope[FRAME] = { owner, instance: null, method: null }
+
+    const rt = await filling.run(new Set(filling.getStore()).add(where), () =>
+        runIn(fn, scope, body, `the default of ${where}`, false)
+    )
+    if (!rt.success) return rt
+
+    if (!owner.statics.has(name)) owner.statics.set(name, parseValue(String(rt.value ?? "")))
+    return new Return(ReturnType.Success, owner.statics.get(name))
 }

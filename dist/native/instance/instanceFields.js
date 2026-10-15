@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const forgescript_1 = require("@tryforge/forgescript");
 const __1 = require("../..");
+const access_1 = require("../../functions/access");
 const lookup_1 = require("../../functions/lookup");
 const value_1 = require("../../functions/value");
 exports.default = new forgescript_1.NativeFunction({
@@ -16,7 +17,12 @@ exports.default = new forgescript_1.NativeFunction({
         const found = (0, lookup_1.instanceIn)(ctx, variable);
         if (!found.ok)
             return this.customError(found.reason);
-        return this.success((0, value_1.stringify)((0, __1.fieldsOf)(found.value.instance)));
+        const { instance, def } = found.value;
+        const shown = Object.entries((0, __1.fieldsOf)(instance)).filter(([name]) => {
+            const member = ctx.client.classes.fieldOf(def, name);
+            return !member || (0, access_1.canReach)(ctx, member.owner, member.access);
+        });
+        return this.success((0, value_1.stringify)(Object.fromEntries(shown)));
     },
 });
 //# sourceMappingURL=instanceFields.js.map

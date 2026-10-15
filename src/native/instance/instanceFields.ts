@@ -1,5 +1,6 @@
 import { Arg, ArgType, NativeFunction } from "@tryforge/forgescript"
 import { fieldsOf } from "../.."
+import { canReach } from "../../functions/access"
 import { instanceIn } from "../../functions/lookup"
 import { stringify } from "../../functions/value"
 
@@ -14,7 +15,13 @@ export default new NativeFunction({
     execute(ctx, [variable]) {
         const found = instanceIn(ctx, variable)
         if (!found.ok) return this.customError(found.reason)
+        const { instance, def } = found.value
 
-        return this.success(stringify(fieldsOf(found.value.instance)))
+        const shown = Object.entries(fieldsOf(instance)).filter(([name]) => {
+            const member = ctx.client.classes.fieldOf(def, name)
+            return !member || canReach(ctx, member.owner, member.access)
+        })
+
+        return this.success(stringify(Object.fromEntries(shown)))
     },
 })

@@ -18,7 +18,7 @@ Classes for ForgeScript: fields, methods, constructors, inheritance, private mem
 2. [Quick start](#quick-start)
 3. [Functions](#functions)
 4. [How it works](#how-it-works)
-5. [Private members](#private-members)
+5. [Modifiers](#modifiers)
 6. [Class files](#class-files)
 7. [Keeping instances](#keeping-instances)
 
@@ -104,6 +104,14 @@ All but `$class` work only inside its body.
 | **`$instanceOf[variable;class]`** | boolean | Whether it is of that class or of one extending it. |
 | **`$isInstance[variable]`** | boolean | Whether the variable holds an instance. |
 
+### Static members
+
+| Function | Returns | What it does |
+|---|---|---|
+| **`$getStatic[class;field]`** | the value | Reads a static field. |
+| **`$setStatic[class;field;value]`** | — | Sets a static field. |
+| **`$callStatic[class;method;...args]`** | what the method returns | Calls a static method. |
+
 ### Classes
 
 | Function | Returns | What it does |
@@ -134,9 +142,26 @@ All but `$class` work only inside its body.
 - A field declared again keeps its place, with the child's default.
 - A class without a constructor uses its parent's.
 
-<h3 align="center">Private members</h3><hr>
+<h3 align="center">Modifiers</h3><hr>
 
-A `#` before a field or method name makes it private, as in JavaScript:
+Words before a field or method name:
+
+```
+$class[Account;
+    $field[private balance;0]
+    $field[protected owner]
+    $field[readonly id;$authorID]
+    $field[static count;0]
+    $method[static create;...]
+]
+```
+
+- `private` members are reached only from the methods of their class, `protected` ones from its children too.
+- `readonly` fields are set by their defaults or in the constructor. `$super[constructor]` works only in a constructor.
+- `static` members belong to the class and have no `this`. They live until the bot restarts or the class is declared again.
+- `$classFields`, `$classMethods` and, outside the class, `$instanceFields` list public members only.
+
+A `#` before the name makes a member private as in JavaScript instead:
 
 ```
 $class[Wallet;
@@ -187,7 +212,15 @@ module.exports = {
 }
 ```
 
-A param is either a name or a `{ name, type, required, rest }` object. `client.classes.add({ ... })` takes the same objects. When one class can't be used, it throws and none of them is added.
+Or the same object wrapped in `ForgeClassBuilder`:
+
+```js
+const { ForgeClassBuilder } = require("forge.class")
+
+module.exports = new ForgeClassBuilder({ name: "Player", ... })
+```
+
+A param is either a name or a `{ name, type, required, rest }` object. `client.classes.add()` takes objects and builders alike. When one class can't be used, it throws and none of them is added.
 
 <h3 align="center">Keeping instances</h3><hr>
 
@@ -198,4 +231,4 @@ $jsonLoad[p;the saved JSON]
 $callMethod[p;greet]   → Hi, Steve!
 ```
 
-[Private](#private-members) `#` fields aren't in the JSON.
+[Private](#modifiers) `#` fields aren't in the JSON.

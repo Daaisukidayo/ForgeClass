@@ -1,17 +1,19 @@
+import type { RecursiveArray } from "@tryforge/forgescript"
 import { readdirSync } from "node:fs"
-import { join, resolve } from "node:path"
-import { Body, ClassDefinition, CONSTRUCTOR, IInstance, IMethod } from "../structures"
+import { join, resolve as resolvePath } from "node:path"
+import { Body, ClassDefinition, CONSTRUCTOR, ForgeClassBuilder, IField, IInstance, IMethod } from "../structures"
 import { done, fail, ok, Result } from "../functions/result"
 import { IClassData } from "../types"
+
+export type ClassInput = IClassData | ForgeClassBuilder
 
 export interface IFoundMethod extends IMethod {
     name: string
     owner: ClassDefinition
 }
 
-export interface IFoundField {
+export interface IFoundField extends IField {
     owner: ClassDefinition
-    body: Body
 }
 
 export class ClassManager {
@@ -68,13 +70,17 @@ export class ClassManager {
         return done
     }
 
-    /** `define` for plain objects, throws instead of returning the reason. */
-    public add(...data: Array<IClassData | IClassData[]>) {
-        this.addFrom(data.flat().map((item) => ({ item })))
+    /** `define` for plain objects and builders, throws instead of returning the reason. */
+    public add(...options: RecursiveArray<ClassInput>[]) {
+        this.addFrom(flatten(options).map((option) => ({ item: this.resolve(option).data })))
+    }
+
+    public resolve(option: ClassInput) {
+        return option instanceof ForgeClassBuilder ? option : new ForgeClassBuilder(option)
     }
 
     public load(dir: string) {
-        const root = resolve(dir)
+        const root = resolvePath(dir)
 
         const files = readdirSync(root, { recursive: true, encoding: "utf8" }).filter((file) => file.endsWith(".js"))
 
@@ -83,8 +89,7 @@ export class ClassManager {
                 const loaded = require(join(root, file))
                 if (Object.keys(loaded).length === 0) return []
 
-                const exported: IClassData | IClassData[] = loaded.default ?? loaded
-                return [exported].flat().map((item) => ({ item, file }))
+                return flatten([loaded.default ?? loaded]).map((option) => ({ item: this.resolve(option).data, file }))
             })
         )
     }
@@ -124,19 +129,29 @@ export class ClassManager {
     }
 
     public findMethod(def: ClassDefinition, name: string): IFoundMethod | null {
-        for (const owner of this.chainOf(def)) {
-            const method = owner.methods.get(name)
-            if (method) return { ...method, name, owner }
-        }
-
-        return null
+        return this.memberOf(def, name, (owner) => owner.methods)
     }
 
+    public staticMethodOf(def: ClassDefinition, name: string): IFoundMethod | null {
+        return this.memberOf(def, name, (owner) => owner.staticMethods)
+    }
+
+    public fieldOf(def: ClassDefinition, name: string): IFoundField | null {
+        return this.memberOf(def, name, (owner) => owner.fields)
+    }
+
+    public staticFieldOf(def: ClassDefinition, name: string): IFoundField | null {
+        return this.memberOf(def, name, (owner) => owner.staticFields)
+    }
+
+    /** Public ones, without the constructor. */
     public methodNamesOf(def: ClassDefinition) {
         const names = new Set<string>()
 
         for (const owner of this.chainOf(def)) {
-            for (const name of owner.methods.keys()) if (name !== CONSTRUCTOR) names.add(name)
+            for (const [name, method] of owner.methods) {
+                if (name !== CONSTRUCTOR && method.access === "public") names.add(name)
+            }
         }
 
         return [...names]
@@ -147,14 +162,23 @@ export class ClassManager {
         const fields = new Map<string, IFoundField>()
 
         for (const owner of this.chainOf(def).reverse()) {
-            for (const [name, body] of owner.fields) fields.set(name, { owner, body })
+            for (const [name, field] of owner.fields) fields.set(name, { ...field, owner })
         }
 
         return fields
     }
 
     public declares(def: ClassDefinition, field: string) {
-        return this.chainOf(def).some((owner) => owner.fields.has(field))
+        return this.fieldOf(def, field) !== null
+    }
+
+    private memberOf<T>(def: ClassDefinition, name: string, members: (owner: ClassDefinition) => Map<string, T>) {
+        for (const owner of this.chainOf(def)) {
+            const member = members(owner).get(name)
+            if (member) return { ...member, name, owner }
+        }
+
+        return null
     }
 
     public isA(def: ClassDefinition, ancestor: string) {
@@ -196,6 +220,8 @@ export class ClassManager {
         if (!defined.ok) throw new Error(`ForgeClass | ${defined.reason}`)
     }
 }
+
+const flatten = (options: unknown[]) => options.flat(Infinity) as ClassInput[]
 
 function definitionOf(data: IClassData): Result<ClassDefinition> {
     if (typeof data?.name !== "string" || !data.name) return fail("A class has no name.")

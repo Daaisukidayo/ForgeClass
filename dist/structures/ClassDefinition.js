@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClassDefinition = exports.isHidden = exports.CONSTRUCTOR = void 0;
 const Instance_1 = require("./Instance");
+const declaration_1 = require("../functions/declaration");
 const keys_1 = require("../functions/keys");
 const params_1 = require("../functions/params");
 const result_1 = require("../functions/result");
@@ -16,6 +17,10 @@ class ClassDefinition {
     methods = new Map();
     hiddenFields = new Map();
     hiddenMethods = new Map();
+    staticFields = new Map();
+    staticMethods = new Map();
+    /** Values of the static fields, each set on first use. */
+    statics = new Map();
     constructor(name) {
         this.name = name;
     }
@@ -32,35 +37,33 @@ class ClassDefinition {
         this.parent = parent;
         return result_1.done;
     }
-    addField(name, body) {
-        if ((0, exports.isHidden)(name)) {
-            const checked = this.checkHidden(name);
-            if (!checked.ok)
-                return checked;
-        }
-        else {
+    /** @param declaration The name, with its modifiers before it. */
+    addField(declaration, body) {
+        const parsed = (0, declaration_1.parseDeclaration)(declaration, "field");
+        if (!parsed.ok)
+            return (0, result_1.fail)(`${this.name}: ${parsed.reason}`);
+        const { name, access, readonly } = parsed.value;
+        if (!(0, exports.isHidden)(name)) {
             if (name === Instance_1.CLASS_KEY)
                 return (0, result_1.fail)(`"${Instance_1.CLASS_KEY}" holds the class name and can't be a field.`);
             const checked = (0, keys_1.checkName)(name, "a field name");
             if (!checked.ok)
                 return checked;
         }
-        const fields = (0, exports.isHidden)(name) ? this.hiddenFields : this.fields;
+        const fields = parsed.value.static ? this.staticFields : (0, exports.isHidden)(name) ? this.hiddenFields : this.fields;
         if (fields.has(name))
             return (0, result_1.fail)(`${this.name}.${name} is declared twice.`);
-        fields.set(name, body);
+        fields.set(name, { body, access, readonly });
         return result_1.done;
     }
-    addMethod(name, params, body) {
-        if (!name)
-            return (0, result_1.fail)(`A method of ${this.name} has no name.`);
-        if ((0, exports.isHidden)(name)) {
-            const checked = this.checkHidden(name);
-            if (!checked.ok)
-                return checked;
-        }
+    /** @param declaration The name, with its modifiers before it. */
+    addMethod(declaration, params, body) {
+        const parsed = (0, declaration_1.parseDeclaration)(declaration, "method");
+        if (!parsed.ok)
+            return (0, result_1.fail)(`${this.name}: ${parsed.reason}`);
+        const { name, access } = parsed.value;
         const label = this.describeMethod(name);
-        const methods = (0, exports.isHidden)(name) ? this.hiddenMethods : this.methods;
+        const methods = parsed.value.static ? this.staticMethods : (0, exports.isHidden)(name) ? this.hiddenMethods : this.methods;
         if (methods.has(name))
             return (0, result_1.fail)(`${label} is declared twice.`);
         const read = (0, params_1.toParams)(params);
@@ -76,14 +79,7 @@ class ClassDefinition {
             if (names.indexOf(param) !== i)
                 return (0, result_1.fail)(`${label} has two parameters named "${param}".`);
         }
-        methods.set(name, { params: read.value, body });
-        return result_1.done;
-    }
-    checkHidden(name) {
-        if (name === "#")
-            return (0, result_1.fail)(`${this.name}: a # needs a name after it.`);
-        if (name === "#constructor")
-            return (0, result_1.fail)(`${this.name}: "#constructor" can't be a name.`);
+        methods.set(name, { params: read.value, body, access });
         return result_1.done;
     }
 }
