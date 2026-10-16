@@ -3,6 +3,7 @@ import { APIEmbed, GuildMember, GuildTextBasedChannel, User } from "discord.js"
 
 const DEADLINE = 60_000
 
+/** Colors terminal text, unless NO_COLOR is set. */
 const paint = (codes: string) => (text: string) => (process.env.NO_COLOR ? text : `\u001b[${codes}m${text}\u001b[0m`)
 
 const green = paint("32")
@@ -10,11 +11,13 @@ const red = paint("31")
 const cyan = paint("36")
 const grey = paint("90")
 
+/** The bot's account, which the cases expect in their output. */
 interface IBot {
     id: string
     name: string
 }
 
+/** Where the cases run: the bot in SMOKE_CHANNEL. */
 interface IPlace {
     author: User
     member: GuildMember | null
@@ -22,29 +25,36 @@ interface IPlace {
     channel: GuildTextBasedChannel
 }
 
+/** What a case's code gave. */
 interface IResult {
     text: string
     embeds: APIEmbed[]
     errors: string[]
 }
 
+/** A live check. */
 interface ICase {
+    /** For SMOKE_ONLY. */
     id: string
 
     name: string
 
     code: string
 
+    /** The code is expected to log an error. */
     failing?: true
 
+    /** Null when it passed, or what went wrong. */
     check: (result: IResult) => string | null
 }
 
+/** A check that the output is exactly the text. */
 function says(expected: string) {
     return ({ text }: IResult) =>
         text === expected ? null : `gave ${JSON.stringify(text)}, expected ${JSON.stringify(expected)}`
 }
 
+/** Every live check, for this bot. */
 function cases(bot: IBot): ICase[] {
     return [
         {
@@ -141,6 +151,7 @@ function cases(bot: IBot): ICase[] {
     ]
 }
 
+/** The cases SMOKE_ONLY names, or all of them. Exits on an unknown one. */
 function chosen(all: ICase[]) {
     const only = process.env.SMOKE_ONLY?.split(",")
         .map((id) => id.trim())
@@ -159,6 +170,7 @@ function chosen(all: ICase[]) {
     return all.filter((test) => only.includes(test.id))
 }
 
+/** Runs code as the bot in the channel, without sending anything. */
 async function execute(client: ForgeClient, place: IPlace, code: string): Promise<IResult> {
     const errors: string[] = []
     const error = Logger.error
@@ -183,6 +195,7 @@ async function execute(client: ForgeClient, place: IPlace, code: string): Promis
     }
 }
 
+/** Runs the live checks, prints a report and exits, with 1 when one failed or time ran out. */
 export async function runSmoke(client: ForgeClient) {
     const deadline = setTimeout(() => {
         console.error(red("ForgeClass live check: ran out of time"))

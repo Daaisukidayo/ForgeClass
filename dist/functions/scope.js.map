@@ -1,1 +1,1 @@
-{"version":3,"file":"scope.js","sourceRoot":"","sources":["../../src/functions/scope.ts"],"names":[],"mappings":";;;AAEa,QAAA,OAAO,GAAG,MAAM,CAAC,oBAAoB,CAAC,CAAA;AAEtC,QAAA,KAAK,GAAG,MAAM,CAAC,kBAAkB,CAAC,CAAA;AAElC,QAAA,MAAM,GAAG,MAAM,CAAC,mBAAmB,CAAC,CAAA"}
+{"version":3,"file":"scope.js","sourceRoot":"","sources":["../../src/functions/scope.ts"],"names":[],"mappings":";;;AAGA,sEAAsE;AACzD,QAAA,OAAO,GAAG,MAAM,CAAC,oBAAoB,CAAC,CAAA;AAEnD,yDAAyD;AAC5C,QAAA,KAAK,GAAG,MAAM,CAAC,kBAAkB,CAAC,CAAA;AAE/C,4CAA4C;AAC/B,QAAA,MAAM,GAAG,MAAM,CAAC,mBAAmB,CAAC,CAAA"}

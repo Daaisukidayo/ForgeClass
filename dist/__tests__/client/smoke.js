@@ -3,14 +3,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.runSmoke = runSmoke;
 const forgescript_1 = require("@tryforge/forgescript");
 const DEADLINE = 60_000;
+/** Colors terminal text, unless NO_COLOR is set. */
 const paint = (codes) => (text) => (process.env.NO_COLOR ? text : `\u001b[${codes}m${text}\u001b[0m`);
 const green = paint("32");
 const red = paint("31");
 const cyan = paint("36");
 const grey = paint("90");
+/** A check that the output is exactly the text. */
 function says(expected) {
     return ({ text }) => text === expected ? null : `gave ${JSON.stringify(text)}, expected ${JSON.stringify(expected)}`;
 }
+/** Every live check, for this bot. */
 function cases(bot) {
     return [
         {
@@ -102,6 +105,7 @@ function cases(bot) {
         },
     ];
 }
+/** The cases SMOKE_ONLY names, or all of them. Exits on an unknown one. */
 function chosen(all) {
     const only = process.env.SMOKE_ONLY?.split(",")
         .map((id) => id.trim())
@@ -115,6 +119,7 @@ function chosen(all) {
     }
     return all.filter((test) => only.includes(test.id));
 }
+/** Runs code as the bot in the channel, without sending anything. */
 async function execute(client, place, code) {
     const errors = [];
     const error = forgescript_1.Logger.error;
@@ -136,6 +141,7 @@ async function execute(client, place, code) {
         forgescript_1.Logger.error = error;
     }
 }
+/** Runs the live checks, prints a report and exits, with 1 when one failed or time ran out. */
 async function runSmoke(client) {
     const deadline = setTimeout(() => {
         console.error(red("ForgeClass live check: ran out of time"));

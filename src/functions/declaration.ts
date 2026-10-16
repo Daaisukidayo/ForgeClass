@@ -1,7 +1,9 @@
 import { fail, ok, Result } from "./result"
 
+/** Where a member can be reached from. */
 export type Access = "public" | "protected" | "private"
 
+/** A member name with its modifiers. */
 export interface IDeclaration {
     name: string
     access: Access
@@ -13,7 +15,7 @@ const WORDS = new Set(["public", "protected", "private", "static", "readonly"])
 
 const ACCESS = new Set(["public", "protected", "private"])
 
-/** Splits `private readonly hp` into the name and its modifiers. */
+/** Splits `private readonly hp` into the name and its modifiers. Fails on unknown, repeated or clashing ones. */
 export function parseDeclaration(text: string, kind: "field" | "method"): Result<IDeclaration> {
     const words = text.trim().split(/\s+/)
     const name = words.pop() ?? ""

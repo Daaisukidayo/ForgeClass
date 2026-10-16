@@ -10,7 +10,10 @@
 <ul class="tsd-breadcrumb" aria-label="Breadcrumb">
 <li><a href="" aria-current="page">IFoundMethod</a></li></ul>
 <h1>Interface IFoundMethod</h1></div>
-<div class="tsd-signature"><span class="tsd-signature-keyword">interface</span> <span class="tsd-kind-interface">IFoundMethod</span> <span class="tsd-signature-symbol">{</span><br/>    <a class="tsd-kind-property" href="#access">access</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Access</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#body">body</a><span class="tsd-signature-symbol">:</span> <a href="../classes/Body.html" class="tsd-signature-type tsd-kind-class">Body</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#name">name</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#owner">owner</a><span class="tsd-signature-symbol">:</span> <a href="../classes/ClassDefinition.html" class="tsd-signature-type tsd-kind-class">ClassDefinition</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#params">params</a><span class="tsd-signature-symbol">:</span> <a href="IParam.html" class="tsd-signature-type tsd-kind-interface">IParam</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">;</span><br/><span class="tsd-signature-symbol">}</span></div>
+<section class="tsd-panel tsd-comment">
+<div class="tsd-comment tsd-typography"><p>A method found up the chain, with the class that declares it as <code>owner</code>.</p>
+</div></section>
+<div class="tsd-signature"><span class="tsd-signature-keyword">interface</span> <span class="tsd-kind-interface">IFoundMethod</span> <span class="tsd-signature-symbol">{</span><br/>    <a class="tsd-kind-property" href="#access">access</a><span class="tsd-signature-symbol">:</span> <a href="../types/Access.html" class="tsd-signature-type tsd-kind-type-alias">Access</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#body">body</a><span class="tsd-signature-symbol">:</span> <a href="../classes/Body.html" class="tsd-signature-type tsd-kind-class">Body</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#name">name</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#owner">owner</a><span class="tsd-signature-symbol">:</span> <a href="../classes/ClassDefinition.html" class="tsd-signature-type tsd-kind-class">ClassDefinition</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#params">params</a><span class="tsd-signature-symbol">:</span> <a href="IParam.html" class="tsd-signature-type tsd-kind-interface">IParam</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">;</span><br/><span class="tsd-signature-symbol">}</span></div>
 <section class="tsd-panel tsd-hierarchy" data-refl="25">
 <h4>Hierarchy (<a href="../hierarchy.html#IFoundMethod">View Summary</a>)</h4>
 <ul class="tsd-hierarchy">
@@ -18,7 +21,7 @@
 <ul class="tsd-hierarchy">
 <li class="tsd-hierarchy-item"><span class="tsd-hierarchy-target">IFoundMethod</span></li></ul></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/a58726b033979693bd00c430b360f5e10b830497/src/managers/ClassManager.ts#L10">src/managers/ClassManager.ts:10</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/35188ee0d0034d821efa89cafeb579d6d854d93e/src/managers/ClassManager.ts#L12">src/managers/ClassManager.ts:12</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -37,32 +40,32 @@
 <section>
 <section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="access"><span>access</span><a href="#access" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">access</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Access</span></div><aside class="tsd-sources">
+<div class="tsd-signature"><span class="tsd-kind-property">access</span><span class="tsd-signature-symbol">:</span> <a href="../types/Access.html" class="tsd-signature-type tsd-kind-type-alias">Access</a></div><aside class="tsd-sources">
 <p>Inherited from <a href="IMethod.html">IMethod</a>.<a href="IMethod.html#access">access</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/a58726b033979693bd00c430b360f5e10b830497/src/structures/ClassDefinition.ts#L28">src/structures/ClassDefinition.ts:28</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/35188ee0d0034d821efa89cafeb579d6d854d93e/src/structures/ClassDefinition.ts#L33">src/structures/ClassDefinition.ts:33</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="body"><span>body</span><a href="#body" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">body</span><span class="tsd-signature-symbol">:</span> <a href="../classes/Body.html" class="tsd-signature-type tsd-kind-class">Body</a></div><aside class="tsd-sources">
 <p>Inherited from <a href="IMethod.html">IMethod</a>.<a href="IMethod.html#body">body</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/a58726b033979693bd00c430b360f5e10b830497/src/structures/ClassDefinition.ts#L27">src/structures/ClassDefinition.ts:27</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/35188ee0d0034d821efa89cafeb579d6d854d93e/src/structures/ClassDefinition.ts#L32">src/structures/ClassDefinition.ts:32</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="name"><span>name</span><a href="#name" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">name</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/a58726b033979693bd00c430b360f5e10b830497/src/managers/ClassManager.ts#L11">src/managers/ClassManager.ts:11</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/35188ee0d0034d821efa89cafeb579d6d854d93e/src/managers/ClassManager.ts#L13">src/managers/ClassManager.ts:13</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="owner"><span>owner</span><a href="#owner" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">owner</span><span class="tsd-signature-symbol">:</span> <a href="../classes/ClassDefinition.html" class="tsd-signature-type tsd-kind-class">ClassDefinition</a></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/a58726b033979693bd00c430b360f5e10b830497/src/managers/ClassManager.ts#L12">src/managers/ClassManager.ts:12</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/35188ee0d0034d821efa89cafeb579d6d854d93e/src/managers/ClassManager.ts#L14">src/managers/ClassManager.ts:14</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="params"><span>params</span><a href="#params" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">params</span><span class="tsd-signature-symbol">:</span> <a href="IParam.html" class="tsd-signature-type tsd-kind-interface">IParam</a><span class="tsd-signature-symbol">[]</span></div><aside class="tsd-sources">
 <p>Inherited from <a href="IMethod.html">IMethod</a>.<a href="IMethod.html#params">params</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/a58726b033979693bd00c430b360f5e10b830497/src/structures/ClassDefinition.ts#L26">src/structures/ClassDefinition.ts:26</a></li></ul></aside></section></section></details></div>
+<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/35188ee0d0034d821efa89cafeb579d6d854d93e/src/structures/ClassDefinition.ts#L31">src/structures/ClassDefinition.ts:31</a></li></ul></aside></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">

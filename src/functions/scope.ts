@@ -1,14 +1,19 @@
-import type { ClassDefinition, IInstance, IParam } from "../structures"
+import type { ClassDefinition, IInstance } from "../structures"
+import type { IParamData } from "../types"
 
+/** The class `$class` is declaring, for the functions in its body. */
 export const BUILDER = Symbol("ForgeClass.builder")
 
+/** The class code that is running, for access checks. */
 export const FRAME = Symbol("ForgeClass.frame")
 
+/** Where `$param` puts what it declares. */
 export const PARAMS = Symbol("ForgeClass.params")
 
 /** What $param declared, by name, while $method or $constructor reads its params. */
-export type ParamTypes = Map<string, Omit<IParam, "name">>
+export type ParamTypes = Map<string, Required<Omit<IParamData, "name">>>
 
+/** The class code that is running. */
 export interface IFrame {
     /** Class that declares the method. */
     owner: ClassDefinition

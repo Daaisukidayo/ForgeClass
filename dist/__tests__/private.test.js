@@ -33,11 +33,21 @@ const WALLET = "$class[Wallet;" +
         strict_1.default.equal(await (0, harness_1.output)("$new[w;Wallet;Ann]$callMethod[w;unlock;0] $callMethod[w;unlock;1234] $callMethod[w;tries]"), "false true 2");
         strict_1.default.equal(await (0, harness_1.output)("$new[w;Wallet;Ann]$callMethod[w;hasPin]"), "true");
     });
-    for (const code of ["$getField[w;#pin]", "$setField[w;#pin;1]", "$hasField[w;#pin]", "$callMethod[w;#check;1]"]) {
+    for (const code of [
+        "$getField[w;#pin]",
+        "$setField[w;#pin;1]",
+        "$hasField[w;#pin]",
+        "$hasMethod[w;#check]",
+        "$callMethod[w;#check;1]",
+    ]) {
         (0, node_test_1.it)(`are refused outside the class: ${code}`, async () => {
             strict_1.default.match(await (0, harness_1.failure)(`$new[w;Wallet;Ann]${code}`), /#\w+ can only be used inside the methods of its class/);
         });
     }
+    (0, node_test_1.it)("are seen by $hasMethod from the methods of their class", async () => {
+        await (0, harness_1.output)("$class[H;$method[#run;1]$method[has;$hasMethod[this;#run]|$hasMethod[this;#nope]]]");
+        strict_1.default.equal(await (0, harness_1.output)("$new[h;H]$callMethod[h;has]"), "true|false");
+    });
     (0, node_test_1.it)("let a default read the # fields declared before it", async () => {
         await (0, harness_1.output)("$class[C;$field[#a;2]$field[#b;$math[$getField[this;#a]*5]]$method[b;$getField[this;#b]]]");
         strict_1.default.equal(await (0, harness_1.output)("$new[c;C]$callMethod[c;b]"), "10");

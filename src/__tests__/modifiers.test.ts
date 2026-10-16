@@ -78,6 +78,7 @@ describe("private and protected", () => {
         assert.deepEqual(await json("$classFields[Account]"), ["id"])
         assert.deepEqual(await json("$classMethods[Account]"), ["deposit", "audit", "fields", "rename"])
         assert.equal(await output("$new[a;Account;Ann]$hasField[a;balance]|$hasField[a;id]"), "false|true")
+        assert.equal(await output("$new[a;Account;Ann]$hasMethod[a;log]|$hasMethod[a;audit]"), "false|true")
     })
 })
 
@@ -129,6 +130,7 @@ describe("static", () => {
 
         assert.equal(await output("$callStatic[Counter;who]"), "false")
         assert.match(await failure("$new[c;Counter]$callMethod[c;bump]"), /is static, call it with \$callStatic/)
+        assert.equal(await output("$new[c;Counter]$hasMethod[c;bump]"), "false")
         assert.match(await failure("$callStatic[Account;deposit;1]"), /isn't static/)
     })
 

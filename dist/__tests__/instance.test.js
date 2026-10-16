@@ -94,6 +94,10 @@ const PLAYER = "$class[Player;" +
         strict_1.default.match(await (0, harness_1.failure)("$new[p;Player;Steve]$getField[p;hpp]"), /Player has no field hpp/);
         strict_1.default.equal(await (0, harness_1.output)("$new[p;Player;Steve]$hasField[p;hp]|$hasField[p;hpp]"), "true|false");
     });
+    (0, node_test_1.it)("says whether $callMethod can call a method", async () => {
+        await (0, harness_1.output)("$class[Hero;$extends[Player]]");
+        strict_1.default.equal(await (0, harness_1.output)("$new[h;Hero;Ann]$hasMethod[h;greet]|$hasMethod[h;fly]|$hasMethod[h;constructor]"), "true|false|false");
+    });
     (0, node_test_1.it)("won't change __class", async () => {
         strict_1.default.match(await (0, harness_1.failure)("$new[p;Player;Steve]$setField[p;__class;Other]"), /can't be changed/);
     });

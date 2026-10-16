@@ -11,10 +11,10 @@
 <li><a href="" aria-current="page">ClassDefinition</a></li></ul>
 <h1>Class ClassDefinition</h1></div>
 <section class="tsd-panel tsd-comment">
-<div class="tsd-comment tsd-typography"><p>Own members only, the ClassManager finds inherited ones.</p>
+<div class="tsd-comment tsd-typography"><p>A declared class. It holds its own members only, the ClassManager finds inherited ones.</p>
 </div></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/a58726b033979693bd00c430b360f5e10b830497/src/structures/ClassDefinition.ts#L34">src/structures/ClassDefinition.ts:34</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/35188ee0d0034d821efa89cafeb579d6d854d93e/src/structures/ClassDefinition.ts#L40">src/structures/ClassDefinition.ts:40</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -58,57 +58,71 @@
 <li><span><span class="tsd-kind-parameter">name</span>: <span class="tsd-signature-type">string</span></span></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="" class="tsd-signature-type tsd-kind-class">ClassDefinition</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/a58726b033979693bd00c430b360f5e10b830497/src/structures/ClassDefinition.ts#L52">src/structures/ClassDefinition.ts:52</a></li></ul></aside></div></li></ul></section></section></details>
+<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/35188ee0d0034d821efa89cafeb579d6d854d93e/src/structures/ClassDefinition.ts#L65">src/structures/ClassDefinition.ts:65</a></li></ul></aside></div></li></ul></section></section></details>
 <details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Properties"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
 <h2 class="tsd-anchor-link" id="properties-1">Properties<a href="#properties-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
 <section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="fields"><code class="tsd-tag">Readonly</code><span>fields</span><a href="#fields" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">fields</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <a href="../interfaces/IField.html" class="tsd-signature-type tsd-kind-interface">IField</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
+<div class="tsd-signature"><span class="tsd-kind-property">fields</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <a href="../interfaces/IField.html" class="tsd-signature-type tsd-kind-interface">IField</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
+<div class="tsd-comment tsd-typography"><p>Instance fields, without <code>#</code> ones.</p>
+</div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/a58726b033979693bd00c430b360f5e10b830497/src/structures/ClassDefinition.ts#L37">src/structures/ClassDefinition.ts:37</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/35188ee0d0034d821efa89cafeb579d6d854d93e/src/structures/ClassDefinition.ts#L45">src/structures/ClassDefinition.ts:45</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="hiddenfields"><code class="tsd-tag">Readonly</code><span>hidden<wbr/>Fields</span><a href="#hiddenfields" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">hiddenFields</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <a href="../interfaces/IField.html" class="tsd-signature-type tsd-kind-interface">IField</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
+<div class="tsd-signature"><span class="tsd-kind-property">hiddenFields</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <a href="../interfaces/IField.html" class="tsd-signature-type tsd-kind-interface">IField</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
+<div class="tsd-comment tsd-typography"><p><code>#</code> fields.</p>
+</div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/a58726b033979693bd00c430b360f5e10b830497/src/structures/ClassDefinition.ts#L41">src/structures/ClassDefinition.ts:41</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/35188ee0d0034d821efa89cafeb579d6d854d93e/src/structures/ClassDefinition.ts#L51">src/structures/ClassDefinition.ts:51</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="hiddenmethods"><code class="tsd-tag">Readonly</code><span>hidden<wbr/>Methods</span><a href="#hiddenmethods" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">hiddenMethods</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <a href="../interfaces/IMethod.html" class="tsd-signature-type tsd-kind-interface">IMethod</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
+<div class="tsd-signature"><span class="tsd-kind-property">hiddenMethods</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <a href="../interfaces/IMethod.html" class="tsd-signature-type tsd-kind-interface">IMethod</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
+<div class="tsd-comment tsd-typography"><p><code>#</code> methods.</p>
+</div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/a58726b033979693bd00c430b360f5e10b830497/src/structures/ClassDefinition.ts#L43">src/structures/ClassDefinition.ts:43</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/35188ee0d0034d821efa89cafeb579d6d854d93e/src/structures/ClassDefinition.ts#L54">src/structures/ClassDefinition.ts:54</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="methods"><code class="tsd-tag">Readonly</code><span>methods</span><a href="#methods" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">methods</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <a href="../interfaces/IMethod.html" class="tsd-signature-type tsd-kind-interface">IMethod</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
+<div class="tsd-signature"><span class="tsd-kind-property">methods</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <a href="../interfaces/IMethod.html" class="tsd-signature-type tsd-kind-interface">IMethod</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
+<div class="tsd-comment tsd-typography"><p>Instance methods and the constructor, without <code>#</code> ones.</p>
+</div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/a58726b033979693bd00c430b360f5e10b830497/src/structures/ClassDefinition.ts#L39">src/structures/ClassDefinition.ts:39</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/35188ee0d0034d821efa89cafeb579d6d854d93e/src/structures/ClassDefinition.ts#L48">src/structures/ClassDefinition.ts:48</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="name"><code class="tsd-tag">Readonly</code><span>name</span><a href="#name" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">name</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/a58726b033979693bd00c430b360f5e10b830497/src/structures/ClassDefinition.ts#L52">src/structures/ClassDefinition.ts:52</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/35188ee0d0034d821efa89cafeb579d6d854d93e/src/structures/ClassDefinition.ts#L65">src/structures/ClassDefinition.ts:65</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="parent"><span>parent</span><a href="#parent" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">parent</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> = null</span></div><aside class="tsd-sources">
+<div class="tsd-signature"><span class="tsd-kind-property">parent</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> = null</span></div>
+<div class="tsd-comment tsd-typography"><p>The class it extends.</p>
+</div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/a58726b033979693bd00c430b360f5e10b830497/src/structures/ClassDefinition.ts#L35">src/structures/ClassDefinition.ts:35</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/35188ee0d0034d821efa89cafeb579d6d854d93e/src/structures/ClassDefinition.ts#L42">src/structures/ClassDefinition.ts:42</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="staticfields"><code class="tsd-tag">Readonly</code><span>static<wbr/>Fields</span><a href="#staticfields" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">staticFields</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <a href="../interfaces/IField.html" class="tsd-signature-type tsd-kind-interface">IField</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
+<div class="tsd-signature"><span class="tsd-kind-property">staticFields</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <a href="../interfaces/IField.html" class="tsd-signature-type tsd-kind-interface">IField</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
+<div class="tsd-comment tsd-typography"><p>Static fields, <code>#</code> ones included.</p>
+</div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/a58726b033979693bd00c430b360f5e10b830497/src/structures/ClassDefinition.ts#L45">src/structures/ClassDefinition.ts:45</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/35188ee0d0034d821efa89cafeb579d6d854d93e/src/structures/ClassDefinition.ts#L57">src/structures/ClassDefinition.ts:57</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="staticmethods"><code class="tsd-tag">Readonly</code><span>static<wbr/>Methods</span><a href="#staticmethods" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">staticMethods</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <a href="../interfaces/IMethod.html" class="tsd-signature-type tsd-kind-interface">IMethod</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
+<div class="tsd-signature"><span class="tsd-kind-property">staticMethods</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <a href="../interfaces/IMethod.html" class="tsd-signature-type tsd-kind-interface">IMethod</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
+<div class="tsd-comment tsd-typography"><p>Static methods, <code>#</code> ones included.</p>
+</div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/a58726b033979693bd00c430b360f5e10b830497/src/structures/ClassDefinition.ts#L47">src/structures/ClassDefinition.ts:47</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/35188ee0d0034d821efa89cafeb579d6d854d93e/src/structures/ClassDefinition.ts#L60">src/structures/ClassDefinition.ts:60</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="statics"><code class="tsd-tag">Readonly</code><span>statics</span><a href="#statics" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">statics</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 <div class="tsd-comment tsd-typography"><p>Values of the static fields, each set on first use.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/a58726b033979693bd00c430b360f5e10b830497/src/structures/ClassDefinition.ts#L50">src/structures/ClassDefinition.ts:50</a></li></ul></aside></section></section></details>
+<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/35188ee0d0034d821efa89cafeb579d6d854d93e/src/structures/ClassDefinition.ts#L63">src/structures/ClassDefinition.ts:63</a></li></ul></aside></section></section></details>
 <details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Methods"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
 <h2 class="tsd-anchor-link" id="methods-2">Methods<a href="#methods-2" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
 <section>
@@ -116,8 +130,10 @@
 <h3 class="tsd-anchor-link" id="addfield"><span>add<wbr/>Field</span><a href="#addfield" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
 <li class="">
-<div class="tsd-signature tsd-anchor-link" id="addfield-1"><span class="tsd-kind-call-signature">addField</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">declaration</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-kind-parameter">body</span><span class="tsd-signature-symbol">:</span> <a href="Body.html" class="tsd-signature-type tsd-kind-class">Body</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Result</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span><a href="#addfield-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-signature tsd-anchor-link" id="addfield-1"><span class="tsd-kind-call-signature">addField</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">declaration</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-kind-parameter">body</span><span class="tsd-signature-symbol">:</span> <a href="Body.html" class="tsd-signature-type tsd-kind-class">Body</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <a href="../types/Result.html" class="tsd-signature-type tsd-kind-type-alias">Result</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span><a href="#addfield-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Declares a field. Fails on a bad name or modifiers, or a field declared already.</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
@@ -125,15 +141,17 @@
 <div class="tsd-comment tsd-typography"><p>The name, with its modifiers before it.</p>
 </div></li>
 <li><span><span class="tsd-kind-parameter">body</span>: <a href="Body.html" class="tsd-signature-type tsd-kind-class">Body</a></span></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Result</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<h4 class="tsd-returns-title">Returns <a href="../types/Result.html" class="tsd-signature-type tsd-kind-type-alias">Result</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/a58726b033979693bd00c430b360f5e10b830497/src/structures/ClassDefinition.ts#L68">src/structures/ClassDefinition.ts:68</a></li></ul></aside></div></li></ul></section>
+<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/35188ee0d0034d821efa89cafeb579d6d854d93e/src/structures/ClassDefinition.ts#L86">src/structures/ClassDefinition.ts:86</a></li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="addmethod"><span>add<wbr/>Method</span><a href="#addmethod" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
 <li class="">
-<div class="tsd-signature tsd-anchor-link" id="addmethod-1"><span class="tsd-kind-call-signature">addMethod</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">declaration</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> (<span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <a href="../interfaces/IParamData.html" class="tsd-signature-type tsd-kind-interface">IParamData</a>)<span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">body</span><span class="tsd-signature-symbol">:</span> <a href="Body.html" class="tsd-signature-type tsd-kind-class">Body</a><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Result</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span><a href="#addmethod-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-signature tsd-anchor-link" id="addmethod-1"><span class="tsd-kind-call-signature">addMethod</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">declaration</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> (<span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <a href="../interfaces/IParamData.html" class="tsd-signature-type tsd-kind-interface">IParamData</a>)<span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">body</span><span class="tsd-signature-symbol">:</span> <a href="Body.html" class="tsd-signature-type tsd-kind-class">Body</a><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <a href="../types/Result.html" class="tsd-signature-type tsd-kind-type-alias">Result</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span><a href="#addmethod-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Declares a method or the constructor. Fails on a bad name, modifiers or params, or a method declared already.</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
@@ -142,35 +160,39 @@
 </div></li>
 <li><span><span class="tsd-kind-parameter">params</span>: (<span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <a href="../interfaces/IParamData.html" class="tsd-signature-type tsd-kind-interface">IParamData</a>)<span class="tsd-signature-symbol">[]</span></span></li>
 <li><span><span class="tsd-kind-parameter">body</span>: <a href="Body.html" class="tsd-signature-type tsd-kind-class">Body</a></span></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Result</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<h4 class="tsd-returns-title">Returns <a href="../types/Result.html" class="tsd-signature-type tsd-kind-type-alias">Result</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/a58726b033979693bd00c430b360f5e10b830497/src/structures/ClassDefinition.ts#L88">src/structures/ClassDefinition.ts:88</a></li></ul></aside></div></li></ul></section>
+<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/35188ee0d0034d821efa89cafeb579d6d854d93e/src/structures/ClassDefinition.ts#L109">src/structures/ClassDefinition.ts:109</a></li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="describemethod"><span>describe<wbr/>Method</span><a href="#describemethod" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
 <li class="">
 <div class="tsd-signature tsd-anchor-link" id="describemethod-1"><span class="tsd-kind-call-signature">describeMethod</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">method</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><a href="#describemethod-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p><code>A.m</code>, or <code>A's constructor</code>, for messages.</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li><span><span class="tsd-kind-parameter">method</span>: <span class="tsd-signature-type">string</span></span></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/a58726b033979693bd00c430b360f5e10b830497/src/structures/ClassDefinition.ts#L54">src/structures/ClassDefinition.ts:54</a></li></ul></aside></div></li></ul></section>
+<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/35188ee0d0034d821efa89cafeb579d6d854d93e/src/structures/ClassDefinition.ts#L68">src/structures/ClassDefinition.ts:68</a></li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="extend"><span>extend</span><a href="#extend" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
 <li class="">
-<div class="tsd-signature tsd-anchor-link" id="extend-1"><span class="tsd-kind-call-signature">extend</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">parent</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Result</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span><a href="#extend-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-signature tsd-anchor-link" id="extend-1"><span class="tsd-kind-call-signature">extend</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">parent</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <a href="../types/Result.html" class="tsd-signature-type tsd-kind-type-alias">Result</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span><a href="#extend-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Sets the parent. Fails when it has one already, or the name is empty or its own.</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li><span><span class="tsd-kind-parameter">parent</span>: <span class="tsd-signature-type">string</span></span></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Result</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<h4 class="tsd-returns-title">Returns <a href="../types/Result.html" class="tsd-signature-type tsd-kind-type-alias">Result</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/a58726b033979693bd00c430b360f5e10b830497/src/structures/ClassDefinition.ts#L58">src/structures/ClassDefinition.ts:58</a></li></ul></aside></div></li></ul></section></section></details></div>
+<li>Defined in <a href="https://github.com/Daaisukidayo/ForgeClass/blob/35188ee0d0034d821efa89cafeb579d6d854d93e/src/structures/ClassDefinition.ts#L73">src/structures/ClassDefinition.ts:73</a></li></ul></aside></div></li></ul></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">

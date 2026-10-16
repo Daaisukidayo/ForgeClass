@@ -11,6 +11,10 @@ const hidden_1 = require("./hidden");
 const params_1 = require("./params");
 const scope_1 = require("./scope");
 const value_1 = require("./value");
+/**
+ * Null when the result is a success, or a `$return` that's allowed.
+ * A stray `$return`, `$break` or `$continue` becomes an error, anything else passes through.
+ */
 function failureOf(fn, rt, where, allowReturn = true) {
     if (rt.success || (rt.return && allowReturn))
         return null;
@@ -21,6 +25,7 @@ function failureOf(fn, rt, where, allowReturn = true) {
     }
     return rt;
 }
+/** Runs a body in a scope. Succeeds with its output, or what `$return` gave. */
 async function runIn(fn, scope, body, where, allowReturn = true) {
     let code;
     try {
@@ -32,6 +37,10 @@ async function runIn(fn, scope, body, where, allowReturn = true) {
     const rt = await fn["resolveCode"](scope, code);
     return failureOf(fn, rt, where, allowReturn) ?? new forgescript_1.Return(forgescript_1.ReturnType.Success, rt.value);
 }
+/**
+ * Runs a method with `this` and its params in the env, after checking and converting the args.
+ * @param instance Null for a static method.
+ */
 async function runMethod(fn, ctx, instance, method, args) {
     const where = method.owner.describeMethod(method.name);
     const { min, max } = (0, params_1.arityOf)(method.params);
@@ -51,7 +60,10 @@ async function runMethod(fn, ctx, instance, method, args) {
     scope[scope_1.FRAME] = { owner: method.owner, instance, method: method.name };
     return runIn(fn, scope, method.body, where);
 }
-/** Field defaults from the root class down, then the constructor. Succeeds with the instance. */
+/**
+ * Makes an instance: field defaults from the root class down, `#` ones after them, then the constructor.
+ * Succeeds with the instance.
+ */
 async function construct(fn, ctx, def, args) {
     const classes = ctx.client.classes;
     const instance = { [structures_1.CLASS_KEY]: def.name };

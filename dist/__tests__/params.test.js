@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const strict_1 = __importDefault(require("node:assert/strict"));
 const forgescript_1 = require("@tryforge/forgescript");
 const node_test_1 = require("node:test");
+const __1 = require("..");
 const harness_1 = require("./support/harness");
 (0, node_test_1.beforeEach)(() => harness_1.bot.ext.classes.clear());
 (0, node_test_1.describe)("$param", () => {
@@ -54,7 +55,7 @@ const harness_1 = require("./support/harness");
     }
     (0, node_test_1.it)("refuses a type that doesn't exist, and Enum", async () => {
         strict_1.default.match(await (0, harness_1.failure)("$class[A;$method[m;1;$param[x;Numbr]]]"), /Numbr.*is not of type.*Enum/);
-        strict_1.default.match(await (0, harness_1.failure)("$class[A;$method[m;1;$param[x;Enum]]]"), /can't be an Enum/);
+        strict_1.default.match(await (0, harness_1.failure)("$class[A;$method[m;1;$param[x;Enum]]]"), /Enum.*for argument.*type.*is not of type/);
     });
     (0, node_test_1.it)("refuses a rest param before the last, and a required one after an optional", async () => {
         strict_1.default.match(await (0, harness_1.failure)("$class[A;$method[m;1;$param[a;String;true;true];b]]"), /Only the last param can be rest, not a/);
@@ -76,7 +77,20 @@ const harness_1 = require("./support/harness");
         strict_1.default.equal(await (0, harness_1.output)("$new[c;Calc]$callMethod[c;double;21]"), "42");
         strict_1.default.equal(await (0, harness_1.output)("$new[c;Calc]$callMethod[c;mix;x]|$callMethod[c;mix;x;3]"), "x/|x/3");
     });
-    (0, node_test_1.it)("refuse a type that doesn't exist", () => {
+    (0, node_test_1.it)("take a ParamType, which is ForgeScript's arg types without Enum", async () => {
+        harness_1.bot.ext.classes.add({
+            name: "Box",
+            methods: { get: { params: [{ name: "data", type: __1.ParamType.Json }], code: "$return[$env[data;a]]" } },
+        });
+        strict_1.default.equal(await (0, harness_1.output)(`$new[b;Box]$callMethod[b;get;{"a":5}]`), "5");
+        strict_1.default.equal(__1.ParamType.Number, forgescript_1.ArgType.Number);
+        strict_1.default.ok(!("Enum" in __1.ParamType) && !(String(forgescript_1.ArgType.Enum) in __1.ParamType));
+    });
+    (0, node_test_1.it)("refuse a type that doesn't exist, and Enum", () => {
+        strict_1.default.throws(() => harness_1.bot.ext.classes.add({
+            name: "A",
+            methods: { m: { params: [{ name: "n", type: "Enum" }], code: "1" } },
+        }), /Param n can't be an Enum/);
         strict_1.default.throws(() => harness_1.bot.ext.classes.add({
             name: "A",
             methods: { m: { params: [{ name: "n", type: "Numbr" }], code: "1" } },

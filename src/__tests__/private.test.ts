@@ -38,7 +38,13 @@ describe("# members", () => {
         assert.equal(await output("$new[w;Wallet;Ann]$callMethod[w;hasPin]"), "true")
     })
 
-    for (const code of ["$getField[w;#pin]", "$setField[w;#pin;1]", "$hasField[w;#pin]", "$callMethod[w;#check;1]"]) {
+    for (const code of [
+        "$getField[w;#pin]",
+        "$setField[w;#pin;1]",
+        "$hasField[w;#pin]",
+        "$hasMethod[w;#check]",
+        "$callMethod[w;#check;1]",
+    ]) {
         it(`are refused outside the class: ${code}`, async () => {
             assert.match(
                 await failure(`$new[w;Wallet;Ann]${code}`),
@@ -46,6 +52,11 @@ describe("# members", () => {
             )
         })
     }
+
+    it("are seen by $hasMethod from the methods of their class", async () => {
+        await output("$class[H;$method[#run;1]$method[has;$hasMethod[this;#run]|$hasMethod[this;#nope]]]")
+        assert.equal(await output("$new[h;H]$callMethod[h;has]"), "true|false")
+    })
 
     it("let a default read the # fields declared before it", async () => {
         await output("$class[C;$field[#a;2]$field[#b;$math[$getField[this;#a]*5]]$method[b;$getField[this;#b]]]")

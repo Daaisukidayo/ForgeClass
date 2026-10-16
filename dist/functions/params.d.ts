@@ -2,6 +2,7 @@ import { CompiledFunction, Context, Return, ReturnType } from "@tryforge/forgesc
 import type { IParam } from "../structures";
 import type { IParamData } from "../types";
 import { Result } from "./result";
+/** Checks the params and fills in their defaults: `String`, required, not rest. */
 export declare function toParams(inputs: Array<string | IParamData>): Result<IParam[]>;
 /** How many args a method takes. */
 export declare function arityOf(params: IParam[]): {
