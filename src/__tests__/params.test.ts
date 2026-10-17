@@ -100,6 +100,25 @@ describe("typed params in class files", () => {
         assert.equal(await output("$new[c;Calc]$callMethod[c;mix;x]|$callMethod[c;mix;x;3]"), "x/|x/3")
     })
 
+    it("type the constructor's params too", async () => {
+        bot.ext.classes.add({
+            name: "Age",
+            fields: { years: 0 },
+            methods: {
+                constructor: {
+                    params: [
+                        { name: "years", type: ParamType.Number },
+                        { name: "unit", type: "String", required: false },
+                    ],
+                    code: "$setField[this;years;$env[years]]",
+                },
+            },
+        })
+
+        assert.equal(await output("$new[a;Age;4]$getField[a;years]"), "4")
+        assert.match(await failure("$new[a;Age;old]"), /old.*for argument.*years.*is not of type.*Number/)
+    })
+
     it("take a ParamType, which is ForgeScript's arg types without Enum", async () => {
         bot.ext.classes.add({
             name: "Box",

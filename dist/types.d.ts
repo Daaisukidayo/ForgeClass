@@ -31,6 +31,9 @@ export interface IClassData {
     /** Defaults by field name. Modifiers go before the name: `"private hp": 100`. */
     fields?: Record<string, FieldDefault>;
     /** Methods by name, as code or with params. Modifiers go before the name, `constructor` is the constructor. */
-    methods?: Record<string, string | IMethodData>;
+    methods?: Record<string, string | IMethodData> & {
+        /** The constructor, which `$new` runs. */
+        constructor?: string | IMethodData | Function;
+    };
 }
 //# sourceMappingURL=types.d.ts.map

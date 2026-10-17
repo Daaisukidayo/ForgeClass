@@ -3,7 +3,7 @@ import { readdirSync } from "node:fs"
 import { join, resolve as resolvePath } from "node:path"
 import { Body, ClassDefinition, CONSTRUCTOR, ForgeClassBuilder, IField, IInstance, IMethod } from "../structures"
 import { done, fail, ok, Result } from "../functions/result"
-import { FieldDefault, IClassData } from "../types"
+import { FieldDefault, IClassData, IMethodData } from "../types"
 
 /** What `add()` takes. */
 export type ClassInput = IClassData | ForgeClassBuilder
@@ -277,7 +277,7 @@ function definitionOf(data: IClassData): Result<ClassDefinition> {
     }
 
     for (const [name, method] of Object.entries(data.methods ?? {})) {
-        const { params = [], code } = typeof method === "string" ? { code: method } : method
+        const { params = [], code } = typeof method === "string" ? { code: method } : (method as IMethodData)
         if (typeof code !== "string") return fail(`${def.describeMethod(name)} has no code.`)
 
         const added = def.addMethod(name, params, new Body(code))

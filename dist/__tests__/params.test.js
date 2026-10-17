@@ -77,6 +77,23 @@ const harness_1 = require("./support/harness");
         strict_1.default.equal(await (0, harness_1.output)("$new[c;Calc]$callMethod[c;double;21]"), "42");
         strict_1.default.equal(await (0, harness_1.output)("$new[c;Calc]$callMethod[c;mix;x]|$callMethod[c;mix;x;3]"), "x/|x/3");
     });
+    (0, node_test_1.it)("type the constructor's params too", async () => {
+        harness_1.bot.ext.classes.add({
+            name: "Age",
+            fields: { years: 0 },
+            methods: {
+                constructor: {
+                    params: [
+                        { name: "years", type: __1.ParamType.Number },
+                        { name: "unit", type: "String", required: false },
+                    ],
+                    code: "$setField[this;years;$env[years]]",
+                },
+            },
+        });
+        strict_1.default.equal(await (0, harness_1.output)("$new[a;Age;4]$getField[a;years]"), "4");
+        strict_1.default.match(await (0, harness_1.failure)("$new[a;Age;old]"), /old.*for argument.*years.*is not of type.*Number/);
+    });
     (0, node_test_1.it)("take a ParamType, which is ForgeScript's arg types without Enum", async () => {
         harness_1.bot.ext.classes.add({
             name: "Box",

@@ -7,6 +7,7 @@ const hidden_1 = require("../../functions/hidden");
 const lookup_1 = require("../../functions/lookup");
 exports.default = new forgescript_1.NativeFunction({
     name: "$hasMethod",
+    version: "1.2.0",
     description: "Checks whether an instance has a method, returns bool",
     unwrap: true,
     brackets: true,

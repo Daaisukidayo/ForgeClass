@@ -18,7 +18,7 @@
     "prettier": "prettier --write \"./src/**/*\"",
     "lint": "eslint ./src && prettier --check \"./src/**/*\"",
     "tidy": "npm run eslint && npm run prettier",
-    "docgen": "npm run tidy && rimraf dist && tsc && typedoc src/index.ts && node dist/@build/docgen",
+    "docgen": "npm run tidy && rimraf dist && tsc && typedoc src/index.ts && node dist/@build/docgen && tsc",
     "commit": "npm run docgen && node dist/@build/commit",
     "prepublishOnly": "npm run lint && npm run build && node .github/scripts/checkpack.js",
     "postpublish": "tsc"

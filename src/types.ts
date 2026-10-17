@@ -37,5 +37,9 @@ export interface IClassData {
     fields?: Record<string, FieldDefault>
 
     /** Methods by name, as code or with params. Modifiers go before the name, `constructor` is the constructor. */
-    methods?: Record<string, string | IMethodData>
+    methods?: Record<string, string | IMethodData> & {
+        // without it TypeScript types the key as Object.prototype.constructor, the Function every object inherits
+        /** The constructor, which `$new` runs. */
+        constructor?: string | IMethodData | Function
+    }
 }
