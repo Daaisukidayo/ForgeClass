@@ -7,6 +7,10 @@ import { arityOf, valuesOf } from "./params"
 import { FRAME } from "./scope"
 import { parseValue } from "./value"
 
+/**
+ * Null when the result is a success, or a `$return` that's allowed.
+ * A stray `$return`, `$break` or `$continue` becomes an error, anything else passes through.
+ */
 export function failureOf(fn: CompiledFunction, rt: Return, where: string, allowReturn = true): Return | null {
     if (rt.success || (rt.return && allowReturn)) return null
 
@@ -18,6 +22,7 @@ export function failureOf(fn: CompiledFunction, rt: Return, where: string, allow
     return rt
 }
 
+/** Runs a body in a scope. Succeeds with its output, or what `$return` gave. */
 async function runIn(fn: CompiledFunction, scope: Context, body: Body, where: string, allowReturn = true) {
     let code: Code
 
@@ -31,6 +36,10 @@ async function runIn(fn: CompiledFunction, scope: Context, body: Body, where: st
     return failureOf(fn, rt, where, allowReturn) ?? new Return(ReturnType.Success, rt.value)
 }
 
+/**
+ * Runs a method with `this` and its params in the env, after checking and converting the args.
+ * @param instance Null for a static method.
+ */
 export async function runMethod(
     fn: CompiledFunction,
     ctx: Context,
@@ -61,7 +70,10 @@ export async function runMethod(
     return runIn(fn, scope, method.body, where)
 }
 
-/** Field defaults from the root class down, then the constructor. Succeeds with the instance. */
+/**
+ * Makes an instance: field defaults from the root class down, `#` ones after them, then the constructor.
+ * Succeeds with the instance.
+ */
 export async function construct(fn: CompiledFunction, ctx: Context, def: ClassDefinition, args: string[]) {
     const classes = ctx.client.classes
     const instance: IInstance = { [CLASS_KEY]: def.name }

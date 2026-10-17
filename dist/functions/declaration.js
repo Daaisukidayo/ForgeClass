@@ -4,7 +4,7 @@ exports.parseDeclaration = parseDeclaration;
 const result_1 = require("./result");
 const WORDS = new Set(["public", "protected", "private", "static", "readonly"]);
 const ACCESS = new Set(["public", "protected", "private"]);
-/** Splits `private readonly hp` into the name and its modifiers. */
+/** Splits `private readonly hp` into the name and its modifiers. Fails on unknown, repeated or clashing ones. */
 function parseDeclaration(text, kind) {
     const words = text.trim().split(/\s+/);
     const name = words.pop() ?? "";

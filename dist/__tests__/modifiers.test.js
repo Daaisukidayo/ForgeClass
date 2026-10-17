@@ -70,6 +70,7 @@ const ACCOUNT = "$class[Account;" +
         strict_1.default.deepEqual(await (0, harness_1.json)("$classFields[Account]"), ["id"]);
         strict_1.default.deepEqual(await (0, harness_1.json)("$classMethods[Account]"), ["deposit", "audit", "fields", "rename"]);
         strict_1.default.equal(await (0, harness_1.output)("$new[a;Account;Ann]$hasField[a;balance]|$hasField[a;id]"), "false|true");
+        strict_1.default.equal(await (0, harness_1.output)("$new[a;Account;Ann]$hasMethod[a;log]|$hasMethod[a;audit]"), "false|true");
     });
 });
 (0, node_test_1.describe)("readonly", () => {
@@ -107,6 +108,7 @@ const ACCOUNT = "$class[Account;" +
         await (0, harness_1.output)(ACCOUNT);
         strict_1.default.equal(await (0, harness_1.output)("$callStatic[Counter;who]"), "false");
         strict_1.default.match(await (0, harness_1.failure)("$new[c;Counter]$callMethod[c;bump]"), /is static, call it with \$callStatic/);
+        strict_1.default.equal(await (0, harness_1.output)("$new[c;Counter]$hasMethod[c;bump]"), "false");
         strict_1.default.match(await (0, harness_1.failure)("$callStatic[Account;deposit;1]"), /isn't static/);
     });
     (0, node_test_1.it)("is inherited, and $super reaches the parent's", async () => {

@@ -130,6 +130,15 @@ describe("fields", () => {
         assert.equal(await output("$new[p;Player;Steve]$hasField[p;hp]|$hasField[p;hpp]"), "true|false")
     })
 
+    it("says whether $callMethod can call a method", async () => {
+        await output("$class[Hero;$extends[Player]]")
+
+        assert.equal(
+            await output("$new[h;Hero;Ann]$hasMethod[h;greet]|$hasMethod[h;fly]|$hasMethod[h;constructor]"),
+            "true|false|false"
+        )
+    })
+
     it("won't change __class", async () => {
         assert.match(await failure("$new[p;Player;Steve]$setField[p;__class;Other]"), /can't be changed/)
     })

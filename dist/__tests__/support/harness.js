@@ -11,9 +11,11 @@ const strict_1 = __importDefault(require("node:assert/strict"));
 const forgescript_1 = require("@tryforge/forgescript");
 const __1 = require("../..");
 let nativesLoaded = false;
+/** A client stub with ForgeClass that runs code without Discord. */
 class TestBot {
     ext;
     client;
+    /** Warnings logged while loading, apart from function overrides. */
     warnings = [];
     constructor(ext = new __1.ForgeClass()) {
         this.ext = ext;
@@ -39,6 +41,7 @@ class TestBot {
             forgescript_1.Logger.warn = warn;
         }
     }
+    /** Runs code and collects the errors it logs. */
     async run(code, env = {}) {
         const errors = [];
         const error = forgescript_1.Logger.error;
@@ -61,18 +64,22 @@ class TestBot {
     }
 }
 exports.TestBot = TestBot;
+/** The bot the tests share. */
 exports.bot = new TestBot();
+/** Runs code that must succeed. Returns its output. */
 async function output(code, env) {
     const run = await exports.bot.run(code, env);
     strict_1.default.deepEqual(run.errors, [], `${code} failed`);
     return run.output;
 }
+/** Runs code that must fail with exactly one error. Returns its message. */
 async function failure(code, env) {
     const run = await exports.bot.run(code, env);
     strict_1.default.equal(run.errors.length, 1, `${code} was expected to fail`);
     strict_1.default.equal(run.output, null, "a failed command sends nothing");
     return run.errors[0];
 }
+/** Runs code that must succeed and parses its output as JSON. */
 async function json(code, env) {
     return JSON.parse((await output(code, env)) ?? "null");
 }

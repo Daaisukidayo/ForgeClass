@@ -6,27 +6,38 @@ const declaration_1 = require("../functions/declaration");
 const keys_1 = require("../functions/keys");
 const params_1 = require("../functions/params");
 const result_1 = require("../functions/result");
+/** The constructor's method name. */
 exports.CONSTRUCTOR = "constructor";
+/** Whether it's a `#` name. */
 const isHidden = (name) => name.startsWith("#");
 exports.isHidden = isHidden;
-/** Own members only, the ClassManager finds inherited ones. */
+/** A declared class. It holds its own members only, the ClassManager finds inherited ones. */
 class ClassDefinition {
     name;
+    /** The class it extends. */
     parent = null;
+    /** Instance fields, without `#` ones. */
     fields = new Map();
+    /** Instance methods and the constructor, without `#` ones. */
     methods = new Map();
+    /** `#` fields. */
     hiddenFields = new Map();
+    /** `#` methods. */
     hiddenMethods = new Map();
+    /** Static fields, `#` ones included. */
     staticFields = new Map();
+    /** Static methods, `#` ones included. */
     staticMethods = new Map();
     /** Values of the static fields, each set on first use. */
     statics = new Map();
     constructor(name) {
         this.name = name;
     }
+    /** `A.m`, or `A's constructor`, for messages. */
     describeMethod(method) {
         return method === exports.CONSTRUCTOR ? `${this.name}'s constructor` : `${this.name}.${method}`;
     }
+    /** Sets the parent. Fails when it has one already, or the name is empty or its own. */
     extend(parent) {
         if (this.parent !== null)
             return (0, result_1.fail)(`${this.name} already extends ${this.parent}.`);
@@ -37,7 +48,10 @@ class ClassDefinition {
         this.parent = parent;
         return result_1.done;
     }
-    /** @param declaration The name, with its modifiers before it. */
+    /**
+     * Declares a field. Fails on a bad name or modifiers, or a field declared already.
+     * @param declaration The name, with its modifiers before it.
+     */
     addField(declaration, body) {
         const parsed = (0, declaration_1.parseDeclaration)(declaration, "field");
         if (!parsed.ok)
@@ -56,7 +70,10 @@ class ClassDefinition {
         fields.set(name, { body, access, readonly });
         return result_1.done;
     }
-    /** @param declaration The name, with its modifiers before it. */
+    /**
+     * Declares a method or the constructor. Fails on a bad name, modifiers or params, or a method declared already.
+     * @param declaration The name, with its modifiers before it.
+     */
     addMethod(declaration, params, body) {
         const parsed = (0, declaration_1.parseDeclaration)(declaration, "method");
         if (!parsed.ok)

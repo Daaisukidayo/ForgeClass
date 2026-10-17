@@ -18,4 +18,5 @@ __exportStar(require("./Body"), exports);
 __exportStar(require("./ClassDefinition"), exports);
 __exportStar(require("./ForgeClassBuilder"), exports);
 __exportStar(require("./Instance"), exports);
+__exportStar(require("./ParamType"), exports);
 //# sourceMappingURL=index.js.map

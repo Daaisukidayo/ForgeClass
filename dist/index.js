@@ -26,10 +26,13 @@ class ForgeClass extends forgescript_1.ForgeExtension {
     name = "ForgeClass";
     description = package_json_1.description;
     version = package_json_1.version;
+    /** The class registry, also at `client.classes`. */
     classes = new managers_1.ClassManager();
+    /** The ForgeClass of a client. Throws when it isn't in the extensions. */
     static of(client) {
         return client.getExtension(ForgeClass, true);
     }
+    /** Loads the functions and sets `client.classes`. */
     init(client) {
         this.load(path_1.default.resolve(__dirname, "native"));
         client.classes = this.classes;

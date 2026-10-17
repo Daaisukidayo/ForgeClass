@@ -4,10 +4,11 @@ import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { after, beforeEach, describe, it } from "node:test"
 import { ForgeClassBuilder } from ".."
-import { bot, failure, output } from "./support/harness"
+import { bot, failure, json, output } from "./support/harness"
 
 const folders: string[] = []
 
+/** Writes the files to a new temp folder, removed after the tests. Returns its path. */
 function folderWith(files: Record<string, string>) {
     const root = mkdtempSync(join(tmpdir(), "forgeclass-test-"))
     folders.push(root)
@@ -46,6 +47,51 @@ describe("classes.add", () => {
     it("takes numbers as defaults", async () => {
         bot.ext.classes.add({ name: "Counter", fields: { count: 0 } })
         assert.equal(await output("$new[c;Counter]$getField[c;count]"), "0")
+    })
+
+    it("runs every string of a default as code, even inside arrays and objects", async () => {
+        bot.ext.classes.add({
+            name: "Run",
+            fields: {
+                list: [],
+                stats: { best: 1, by: "$math[1+1]", name: "Ann", id: "123456789012345678" },
+                tags: ["a", "$math[2+2]"],
+                owner: null,
+                level: 2,
+                code: "$math[1+1]",
+                "static runs": [],
+            },
+        })
+
+        assert.deepEqual(await json("$new[r;Run]$instanceFields[r]"), {
+            list: [],
+            stats: { best: 1, by: 2, name: "Ann", id: "123456789012345678" },
+            tags: ["a", 4],
+            owner: null,
+            level: 2,
+            code: 2,
+        })
+        assert.equal(await output("$getStatic[Run;runs]"), "[]")
+    })
+
+    it("reports a string inside a default that doesn't compile when it first runs", async () => {
+        bot.ext.classes.add({ name: "Broken", fields: { stats: { by: "$getField[this" } } })
+        assert.match(await failure("$new[b;Broken]"), /Could not compile the default of Broken\.stats/)
+    })
+
+    it("gives every instance its own copy of a default", async () => {
+        bot.ext.classes.add({ name: "Bag", fields: { items: [] } })
+
+        const { env } = await bot.run("$new[a;Bag]$new[b;Bag]")
+        assert.deepEqual(env.a, { __class: "Bag", items: [] })
+        assert.notEqual((env.a as { items: unknown }).items, (env.b as { items: unknown }).items)
+    })
+
+    it("throws on a default that holds anything else", () => {
+        assert.throws(
+            () => bot.ext.classes.add({ name: "Bad", fields: { run: { f: (() => 1) as never } } }),
+            /Bad: "run" can only default to strings, numbers, booleans, null, arrays and objects/
+        )
     })
 
     it("throws on a class that can't be used, and adds none of them", async () => {

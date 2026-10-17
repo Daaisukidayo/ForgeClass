@@ -5,6 +5,7 @@ exports.arityOf = arityOf;
 exports.valuesOf = valuesOf;
 const forgescript_1 = require("@tryforge/forgescript");
 const result_1 = require("./result");
+/** Checks the params and fills in their defaults: `String`, required, not rest. */
 function toParams(inputs) {
     const params = [];
     for (const [i, input] of inputs.entries()) {
@@ -26,6 +27,7 @@ function toParams(inputs) {
     }
     return (0, result_1.ok)(params);
 }
+/** An ArgType from its number or name, or null when there's none. */
 function typeOf(type) {
     if (type === undefined)
         return forgescript_1.ArgType.String;
@@ -67,6 +69,7 @@ async function valuesOf(fn, ctx, params, args) {
     }
     return new forgescript_1.Return(forgescript_1.ReturnType.Success, values);
 }
+/** One arg converted to its param's type. `String` ones stay as they are. */
 async function valueOf(fn, ctx, param, text) {
     if (param.type === forgescript_1.ArgType.String)
         return new forgescript_1.Return(forgescript_1.ReturnType.Success, text);

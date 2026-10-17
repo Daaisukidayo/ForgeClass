@@ -10,9 +10,11 @@ const result_1 = require("./result");
 const JSON_START = /^\s*[[{]/;
 const LONG_DIGITS = /\d{16,}/;
 const INTEGER = /^-?\d+$/;
+/** Whether the text starts like a JSON object or array. */
 function looksLikeJSON(text) {
     return JSON_START.test(text);
 }
+/** Parses JSON, keeping integers too long to be exact as text. */
 function parseJSON(text) {
     try {
         const value = JSON.parse(text);
@@ -22,18 +24,23 @@ function parseJSON(text) {
         return (0, result_1.fail)(err instanceof Error ? err.message : String(err));
     }
 }
+/** Whether there's an integer too big to be exact, at any depth. */
 function hasUnsafeInteger(value) {
     if (typeof value === "number")
         return Number.isInteger(value) && !Number.isSafeInteger(value);
     return typeof value === "object" && value !== null && Object.values(value).some(hasUnsafeInteger);
 }
+/** A `JSON.parse` reviver that turns inexact integers back into their text. */
 function keepLongIntegers(_key, value, context) {
     if (typeof value === "number" && !Number.isSafeInteger(value) && context?.source && INTEGER.test(context.source)) {
         return context.source;
     }
     return value;
 }
-/** IDs and other numbers that wouldn't read back the same stay text. */
+/**
+ * Text to the value a field keeps: null, JSON, or what `parseScalar` gives.
+ * IDs and other numbers that wouldn't read back the same stay text.
+ */
 function parseValue(text) {
     if (text === "null")
         return null;
@@ -44,6 +51,7 @@ function parseValue(text) {
     }
     return parseScalar(text);
 }
+/** Text to a boolean or a number that reads back the same, a quoted string without its quotes, or the text. */
 function parseScalar(text) {
     if (text.length > 1 && text.startsWith('"') && text.endsWith('"')) {
         const parsed = parseJSON(text);
@@ -58,9 +66,11 @@ function parseScalar(text) {
         return number;
     return text;
 }
+/** `JSON.stringify` that writes bigints as strings. */
 function stringify(value, indent) {
     return JSON.stringify(value, (_key, item) => (typeof item === "bigint" ? item.toString() : item), indent);
 }
+/** A value as a function's output: text as it is, objects as JSON. */
 function toText(value) {
     if (value === undefined)
         return undefined;

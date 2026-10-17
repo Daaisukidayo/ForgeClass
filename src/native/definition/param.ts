@@ -1,4 +1,5 @@
 import { Arg, ArgType, NativeFunction } from "@tryforge/forgescript"
+import { ParamType } from "../.."
 import { PARAMS } from "../../functions/scope"
 
 export default new NativeFunction({
@@ -9,7 +10,7 @@ export default new NativeFunction({
     brackets: true,
     args: [
         Arg.requiredString("name", "The param name"),
-        Arg.requiredEnum(ArgType, "type", "The param type"),
+        Arg.requiredEnum(ParamType, "type", "The param type"),
         Arg.optionalBoolean("required", "Whether it must be given, true by default"),
         Arg.optionalBoolean("rest", "Whether it takes all the remaining args, false by default"),
     ],

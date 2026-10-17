@@ -1,4 +1,4 @@
-/** ForgeScript 2.3.0's Arg.restString makes every rest argument required. */
+/** An optional rest string arg. ForgeScript 2.3.0's `Arg.restString` makes every rest arg required. */
 export declare function optionalRest(name: string, desc: string): {
     required: boolean;
     name: string;

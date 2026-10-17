@@ -1,6 +1,7 @@
 import assert from "node:assert/strict"
 import { ArgType } from "@tryforge/forgescript"
 import { beforeEach, describe, it } from "node:test"
+import { ParamType } from ".."
 import { bot, failure, json, output } from "./support/harness"
 
 beforeEach(() => bot.ext.classes.clear())
@@ -67,7 +68,7 @@ describe("$param", () => {
 
     it("refuses a type that doesn't exist, and Enum", async () => {
         assert.match(await failure("$class[A;$method[m;1;$param[x;Numbr]]]"), /Numbr.*is not of type.*Enum/)
-        assert.match(await failure("$class[A;$method[m;1;$param[x;Enum]]]"), /can't be an Enum/)
+        assert.match(await failure("$class[A;$method[m;1;$param[x;Enum]]]"), /Enum.*for argument.*type.*is not of type/)
     })
 
     it("refuses a rest param before the last, and a required one after an optional", async () => {
@@ -99,7 +100,45 @@ describe("typed params in class files", () => {
         assert.equal(await output("$new[c;Calc]$callMethod[c;mix;x]|$callMethod[c;mix;x;3]"), "x/|x/3")
     })
 
-    it("refuse a type that doesn't exist", () => {
+    it("type the constructor's params too", async () => {
+        bot.ext.classes.add({
+            name: "Age",
+            fields: { years: 0 },
+            methods: {
+                constructor: {
+                    params: [
+                        { name: "years", type: ParamType.Number },
+                        { name: "unit", type: "String", required: false },
+                    ],
+                    code: "$setField[this;years;$env[years]]",
+                },
+            },
+        })
+
+        assert.equal(await output("$new[a;Age;4]$getField[a;years]"), "4")
+        assert.match(await failure("$new[a;Age;old]"), /old.*for argument.*years.*is not of type.*Number/)
+    })
+
+    it("take a ParamType, which is ForgeScript's arg types without Enum", async () => {
+        bot.ext.classes.add({
+            name: "Box",
+            methods: { get: { params: [{ name: "data", type: ParamType.Json }], code: "$return[$env[data;a]]" } },
+        })
+
+        assert.equal(await output(`$new[b;Box]$callMethod[b;get;{"a":5}]`), "5")
+        assert.equal(ParamType.Number, ArgType.Number)
+        assert.ok(!("Enum" in ParamType) && !(String(ArgType.Enum) in ParamType))
+    })
+
+    it("refuse a type that doesn't exist, and Enum", () => {
+        assert.throws(
+            () =>
+                bot.ext.classes.add({
+                    name: "A",
+                    methods: { m: { params: [{ name: "n", type: "Enum" as never }], code: "1" } },
+                }),
+            /Param n can't be an Enum/
+        )
         assert.throws(
             () =>
                 bot.ext.classes.add({

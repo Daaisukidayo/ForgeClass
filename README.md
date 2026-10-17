@@ -99,6 +99,7 @@ All but `$class` work only inside its body.
 | **`$getField[variable;field]`** | the value | Reads a field. |
 | **`$setField[variable;field;value]`** | — | Sets a field the class declares. |
 | **`$hasField[variable;field]`** | boolean | Whether the class declares the field. |
+| **`$hasMethod[variable;method]`** | boolean | Whether `$callMethod` can call the method. |
 | **`$instanceFields[variable]`** | JSON object | The fields, without `__class`. |
 | **`$className[variable]`** | string | The class of the instance. |
 | **`$instanceOf[variable;class]`** | boolean | Whether it is of that class or of one extending it. |
@@ -134,7 +135,7 @@ All but `$class` work only inside its body.
   ```
   $method[give;$return[$env[target;username] gets $arrayJoin[items;, ]];$param[target;User];$param[items;String;false;true]]
   ```
-  An optional param may be left out, and a rest one takes the remaining arguments as an array.
+  The type is any ForgeScript arg type but `Enum`. An optional param may be left out, and a rest one takes the remaining arguments as an array.
 - A method returns what `$return` gives, or else what it outputs.
 
 **Inheritance**
@@ -193,7 +194,7 @@ A file exports one class or an array of them:
 module.exports = {
     name: "Player",
     extends: "Entity",
-    fields: { hp: "100", name: "" },
+    fields: { hp: 100, name: "", items: [] },
     methods: {
         constructor: {
             params: ["name"],
@@ -220,7 +221,9 @@ const { ForgeClassBuilder } = require("forge.class")
 module.exports = new ForgeClassBuilder({ name: "Player", ... })
 ```
 
-A param is either a name or a `{ name, type, required, rest }` object. `client.classes.add()` takes objects and builders alike. When one class can't be used, it throws and none of them is added.
+Every string in a field default is code, even inside an array or object: `stats: { best: 0, by: "$authorID" }`. The rest, like `100`, `[]` or `null`, is kept as it is. Every instance gets its own copy.
+
+A param is either a name or a `{ name, type, required, rest }` object, with `type` written as `"Number"` or `ParamType.Number`. `client.classes.add()` takes objects and builders alike. When one class can't be used, it throws and none of them is added.
 
 <h3 align="center">Keeping instances</h3><hr>
 

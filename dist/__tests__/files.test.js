@@ -11,6 +11,7 @@ const node_test_1 = require("node:test");
 const __1 = require("..");
 const harness_1 = require("./support/harness");
 const folders = [];
+/** Writes the files to a new temp folder, removed after the tests. Returns its path. */
 function folderWith(files) {
     const root = (0, node_fs_1.mkdtempSync)((0, node_path_1.join)((0, node_os_1.tmpdir)(), "forgeclass-test-"));
     folders.push(root);
@@ -43,6 +44,42 @@ function folderWith(files) {
     (0, node_test_1.it)("takes numbers as defaults", async () => {
         harness_1.bot.ext.classes.add({ name: "Counter", fields: { count: 0 } });
         strict_1.default.equal(await (0, harness_1.output)("$new[c;Counter]$getField[c;count]"), "0");
+    });
+    (0, node_test_1.it)("runs every string of a default as code, even inside arrays and objects", async () => {
+        harness_1.bot.ext.classes.add({
+            name: "Run",
+            fields: {
+                list: [],
+                stats: { best: 1, by: "$math[1+1]", name: "Ann", id: "123456789012345678" },
+                tags: ["a", "$math[2+2]"],
+                owner: null,
+                level: 2,
+                code: "$math[1+1]",
+                "static runs": [],
+            },
+        });
+        strict_1.default.deepEqual(await (0, harness_1.json)("$new[r;Run]$instanceFields[r]"), {
+            list: [],
+            stats: { best: 1, by: 2, name: "Ann", id: "123456789012345678" },
+            tags: ["a", 4],
+            owner: null,
+            level: 2,
+            code: 2,
+        });
+        strict_1.default.equal(await (0, harness_1.output)("$getStatic[Run;runs]"), "[]");
+    });
+    (0, node_test_1.it)("reports a string inside a default that doesn't compile when it first runs", async () => {
+        harness_1.bot.ext.classes.add({ name: "Broken", fields: { stats: { by: "$getField[this" } } });
+        strict_1.default.match(await (0, harness_1.failure)("$new[b;Broken]"), /Could not compile the default of Broken\.stats/);
+    });
+    (0, node_test_1.it)("gives every instance its own copy of a default", async () => {
+        harness_1.bot.ext.classes.add({ name: "Bag", fields: { items: [] } });
+        const { env } = await harness_1.bot.run("$new[a;Bag]$new[b;Bag]");
+        strict_1.default.deepEqual(env.a, { __class: "Bag", items: [] });
+        strict_1.default.notEqual(env.a.items, env.b.items);
+    });
+    (0, node_test_1.it)("throws on a default that holds anything else", () => {
+        strict_1.default.throws(() => harness_1.bot.ext.classes.add({ name: "Bad", fields: { run: { f: (() => 1) } } }), /Bad: "run" can only default to strings, numbers, booleans, null, arrays and objects/);
     });
     (0, node_test_1.it)("throws on a class that can't be used, and adds none of them", async () => {
         strict_1.default.throws(() => harness_1.bot.ext.classes.add({ name: "A" }, { name: "B", extends: "Nope" }), /B extends Nope, which is not defined/);

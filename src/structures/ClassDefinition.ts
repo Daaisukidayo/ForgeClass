@@ -7,8 +7,10 @@ import { toParams } from "../functions/params"
 import { done, fail, Result } from "../functions/result"
 import { IParamData } from "../types"
 
+/** The constructor's method name. */
 export const CONSTRUCTOR = "constructor"
 
+/** A param with its defaults filled in. */
 export interface IParam {
     name: string
     type: ArgType
@@ -16,34 +18,45 @@ export interface IParam {
     rest: boolean
 }
 
+/** A declared field. */
 export interface IField {
+    /** Its default, as code. */
     body: Body
     access: Access
     readonly: boolean
 }
 
+/** A declared method. */
 export interface IMethod {
     params: IParam[]
     body: Body
     access: Access
 }
 
+/** Whether it's a `#` name. */
 export const isHidden = (name: string) => name.startsWith("#")
 
-/** Own members only, the ClassManager finds inherited ones. */
+/** A declared class. It holds its own members only, the ClassManager finds inherited ones. */
 export class ClassDefinition {
+    /** The class it extends. */
     public parent: string | null = null
 
+    /** Instance fields, without `#` ones. */
     public readonly fields = new Map<string, IField>()
 
+    /** Instance methods and the constructor, without `#` ones. */
     public readonly methods = new Map<string, IMethod>()
 
+    /** `#` fields. */
     public readonly hiddenFields = new Map<string, IField>()
 
+    /** `#` methods. */
     public readonly hiddenMethods = new Map<string, IMethod>()
 
+    /** Static fields, `#` ones included. */
     public readonly staticFields = new Map<string, IField>()
 
+    /** Static methods, `#` ones included. */
     public readonly staticMethods = new Map<string, IMethod>()
 
     /** Values of the static fields, each set on first use. */
@@ -51,10 +64,12 @@ export class ClassDefinition {
 
     public constructor(public readonly name: string) {}
 
+    /** `A.m`, or `A's constructor`, for messages. */
     public describeMethod(method: string) {
         return method === CONSTRUCTOR ? `${this.name}'s constructor` : `${this.name}.${method}`
     }
 
+    /** Sets the parent. Fails when it has one already, or the name is empty or its own. */
     public extend(parent: string): Result<void> {
         if (this.parent !== null) return fail(`${this.name} already extends ${this.parent}.`)
         if (!parent) return fail(`${this.name} extends a class with no name.`)
@@ -64,7 +79,10 @@ export class ClassDefinition {
         return done
     }
 
-    /** @param declaration The name, with its modifiers before it. */
+    /**
+     * Declares a field. Fails on a bad name or modifiers, or a field declared already.
+     * @param declaration The name, with its modifiers before it.
+     */
     public addField(declaration: string, body: Body): Result<void> {
         const parsed = parseDeclaration(declaration, "field")
         if (!parsed.ok) return fail(`${this.name}: ${parsed.reason}`)
@@ -84,7 +102,10 @@ export class ClassDefinition {
         return done
     }
 
-    /** @param declaration The name, with its modifiers before it. */
+    /**
+     * Declares a method or the constructor. Fails on a bad name, modifiers or params, or a method declared already.
+     * @param declaration The name, with its modifiers before it.
+     */
     public addMethod(declaration: string, params: Array<string | IParamData>, body: Body): Result<void> {
         const parsed = parseDeclaration(declaration, "method")
         if (!parsed.ok) return fail(`${this.name}: ${parsed.reason}`)

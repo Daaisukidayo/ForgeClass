@@ -3,6 +3,7 @@ import type { IParam } from "../structures"
 import type { IParamData } from "../types"
 import { fail, ok, Result } from "./result"
 
+/** Checks the params and fills in their defaults: `String`, required, not rest. */
 export function toParams(inputs: Array<string | IParamData>): Result<IParam[]> {
     const params: IParam[] = []
 
@@ -27,6 +28,7 @@ export function toParams(inputs: Array<string | IParamData>): Result<IParam[]> {
     return ok(params)
 }
 
+/** An ArgType from its number or name, or null when there's none. */
 function typeOf(type: IParamData["type"]): ArgType | null {
     if (type === undefined) return ArgType.String
     if (typeof type === "number") return ArgType[type] === undefined ? null : type
@@ -72,6 +74,7 @@ export async function valuesOf(fn: CompiledFunction, ctx: Context, params: IPara
     return new Return(ReturnType.Success, values)
 }
 
+/** One arg converted to its param's type. `String` ones stay as they are. */
 async function valueOf(fn: CompiledFunction, ctx: Context, param: IParam, text: string): Promise<Return> {
     if (param.type === ArgType.String) return new Return(ReturnType.Success, text)
 
